@@ -3,6 +3,7 @@ package com.spaceapps.aircheck;
 import com.spaceapps.aircheck.JSONObjects.carbonMonoxide.CO;
 import com.spaceapps.aircheck.JSONObjects.ozone.O3;
 import com.spaceapps.aircheck.JSONObjects.weather.List;
+import com.spaceapps.aircheck.JSONObjects.weather.Weather;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -47,7 +48,7 @@ public class ApiManager {
             });*/
 
             @GET("/data/2.5/weather?&appid="+API_CODE)
-            public void getCurrentWeather(@Query("lat") double lat, @Query("lon") double lon, Callback<List> callback);
+            public void getCurrentWeather(@Query("lat") double lat, @Query("lon") double lon, Callback<Weather> callback);
 
             // WARNING: Only one decimal value in LAT and LON
             @GET("/pollution/v1/o3/{lat},{lon}/current.json?appid="+API_CODE)
