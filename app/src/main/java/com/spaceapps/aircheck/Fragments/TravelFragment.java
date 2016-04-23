@@ -42,7 +42,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.spaceapps.aircheck.ApiManager;
 import com.spaceapps.aircheck.Feedback;
 import com.spaceapps.aircheck.JSONObjects.carbonMonoxide.CO;
+import com.spaceapps.aircheck.JSONObjects.no2.NitrousOxide;
 import com.spaceapps.aircheck.JSONObjects.ozone.O3;
+import com.spaceapps.aircheck.JSONObjects.so2.SO2;
 import com.spaceapps.aircheck.JSONObjects.weather.Weather;
 import com.spaceapps.aircheck.R;
 
@@ -175,8 +177,8 @@ public class TravelFragment extends Fragment {
         final float[] coValue = new float[1];
         final float[] ozoneValue = new float[1];
         final float weatherValue;
-        final float[] no2 = new float[1];
-        final float[] so2 = new float[1];
+        final double[] no2Value = new double[1];
+        final float[] so2Value = new float[1];
         tvTest.setText("");
         ApiManager.getApiService().getCO(lat, lon, new Callback<CO>() {
             @Override
@@ -187,14 +189,14 @@ public class TravelFragment extends Fragment {
                     @Override
                     public void success(O3 o3, Response response) {
                         ozoneValue[0] = o3.getData();
-                        ApiManager.getApiService().getNO2(lat, lon, new Callback<NO2>() {
+                        ApiManager.getApiService().getNO2(lat, lon, new Callback<NitrousOxide>() {
                             @Override
-                            public void success(NO2 no2, Response response) {
-                                no2Value[0] = no2.getData();
+                            public void success(NitrousOxide no2, Response response) {
+                                no2Value[0] = no2.getData().getNo2().getValue();
                                 ApiManager.getApiService().getSO2(lat, lon, new Callback<SO2>() {
                                     @Override
-                                    public void success(SO2 no2, Response response) {
-                                        so2Value[0] = so2.getData();
+                                    public void success(SO2 so2, Response response) {
+                                        so2Value[0] = so2.getData().get(0).getValue();
 
                                     }
 
