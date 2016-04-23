@@ -1,50 +1,44 @@
+
 package com.spaceapps.aircheck.JSONObjects.weather;
 
 public class Coord {
 
-    private Float lon;
-    private Float lat;
+    private Double lon;
+    private Double lat;
 
     /**
-     * No args constructor for use in serialization
+     * 
+     * @return
+     *     The lon
      */
-    public Coord() {
-    }
-
-    /**
-     * @param lon
-     * @param lat
-     */
-    public Coord(Float lon, Float lat) {
-        this.lon = lon;
-        this.lat = lat;
-    }
-
-    /**
-     * @return The lon
-     */
-    public Float getLon() {
+    public Double getLon() {
         return lon;
     }
 
     /**
-     * @param lon The lon
+     * 
+     * @param lon
+     *     The lon
      */
-    public void setLon(Float lon) {
+    public void setLon(Double lon) {
         this.lon = lon;
     }
 
     /**
-     * @return The lat
+     * 
+     * @return
+     *     The lat
      */
-    public Float getLat() {
+    public Double getLat() {
         return lat;
     }
 
     /**
-     * @param lat The lat
+     * 
+     * @param lat
+     *     The lat
      */
-    public void setLat(Float lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 

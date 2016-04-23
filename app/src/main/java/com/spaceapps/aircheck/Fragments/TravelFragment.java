@@ -39,17 +39,27 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.spaceapps.aircheck.ApiManager;
 import com.spaceapps.aircheck.Feedback;
+import com.spaceapps.aircheck.JSONObjects.carbonMonoxide.CO;
+import com.spaceapps.aircheck.JSONObjects.no2.NitrousOxide;
+import com.spaceapps.aircheck.JSONObjects.ozone.O3;
+import com.spaceapps.aircheck.JSONObjects.so2.SO2;
+import com.spaceapps.aircheck.JSONObjects.weather.Weather;
 import com.spaceapps.aircheck.R;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import butterknife.ButterKnife;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Autor: Daniel Salvador Urgel
@@ -122,41 +132,111 @@ public class TravelFragment extends Fragment {
         acCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick (AdapterView<?> parent, View view, int position, long id) {
-                tvTest.setText(addresses.get(position).toString());
-                addresses.get(1).
+                //tvTest.setText(String.valueOf(new BigDecimal(String.valueOf(addresses.get(position).getLatitude())).setScale(1, BigDecimal.ROUND_HALF_UP)));
+
+                double lat = new BigDecimal(addresses.get(position).getLatitude()).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+                double lon = new BigDecimal(addresses.get(position).getLongitude()).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+
+                calculeData(lat, lon);
             }
         });
 
 
-            btSumbitCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               /* tvTest.setText(acCity.getText().toString());
-                try {
-                    List<Address> addresses= gc.getFromLocationName(acCity.getText().toString(), 10); // get the found Address Objects
+        btSumbitCity.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            tvTest.setText(acCity.getText().toString());
+            try {
+                List<Address> addresses= gc.getFromLocationName(acCity.getText().toString(), 10); // get the found Address Objects
 
-                    ArrayList<String> sAdapter = new ArrayList<String>();
-                    for (Address a:addresses) {
-                        tvTest.setText(tvTest.getText() + "\n" + a.toString());
-                        sAdapter.add(a.getLocality() + ", " + a.getCountryName());
-                    }
-
-                    String[] cities = (String[]) sAdapter.toArray(new String[sAdapter.size()]);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(ctx,
-                            android.R.layout.simple_dropdown_item_1line, cities);
-
-                    acCity.setAdapter(adapter);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                ArrayList<String> sAdapter = new ArrayList<String>();
+                for (Address a:addresses) {
+                    tvTest.setText(tvTest.getText() + "\n" + a.toString());
+                    sAdapter.add(a.getLocality() + ", " + a.getCountryName());
                 }
 
-            }*/
+                String[] cities = (String[]) sAdapter.toArray(new String[sAdapter.size()]);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(ctx,
+                        android.R.layout.simple_dropdown_item_1line, cities);
+
+                acCity.setAdapter(adapter);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            }
         });
 
 
         return v;
     }
+
+
+    private void calculeData(final double lat, final double lon) {
+        final float[] coValue = new float[1];
+        final float[] ozoneValue = new float[1];
+        final float weatherValue;
+        final double[] no2Value = new double[1];
+        final float[] so2Value = new float[1];
+        tvTest.setText("");
+        ApiManager.getApiService().getCO(lat, lon, new Callback<CO>() {
+            @Override
+            public void success(CO co, Response response) {
+                coValue[0] = co.getData().get(0).getValue();
+
+                ApiManager.getApiService().getOzone(lat, lon, new Callback<O3>() {
+                    @Override
+                    public void success(O3 o3, Response response) {
+                        ozoneValue[0] = o3.getData();
+                        ApiManager.getApiService().getNO2(lat, lon, new Callback<NitrousOxide>() {
+                            @Override
+                            public void success(NitrousOxide no2, Response response) {
+                                no2Value[0] = no2.getData().getNo2().getValue();
+                                ApiManager.getApiService().getSO2(lat, lon, new Callback<SO2>() {
+                                    @Override
+                                    public void success(SO2 so2, Response response) {
+                                        so2Value[0] = so2.getData().get(0).getValue();
+
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) { }
+                                });
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) { }
+                        });
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {}
+                });
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+
+
+    }
+
+    /*
+    ApiManager.getApiService().getCurrentWeather(lat, lon, new Callback<Weather>() {
+                            @Override
+                            public void success(Weather weather, Response response) {
+                                tvTest.setText("Succes " + weather.getMain());
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                tvTest.setText("Failure ");
+                            }
+                        });
+     */
 
     @Override
     public void onResume() {

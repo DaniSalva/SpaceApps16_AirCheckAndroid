@@ -1,136 +1,102 @@
+
 package com.spaceapps.aircheck.JSONObjects.weather;
 
 public class Main {
 
-    private Float temp;
-    private Float pressure;
-    private Float humidity;
-    private Float tempMin;
-    private Float tempMax;
-    private Float seaLevel;
-    private Float grndLevel;
+    private Double temp;
+    private Integer pressure;
+    private Integer humidity;
+    private Double tempMin;
+    private Integer tempMax;
 
     /**
-     * No args constructor for use in serialization
+     * 
+     * @return
+     *     The temp
      */
-    public Main() {
-    }
-
-    /**
-     * @param seaLevel
-     * @param humidity
-     * @param pressure
-     * @param grndLevel
-     * @param tempMax
-     * @param temp
-     * @param tempMin
-     */
-    public Main(Float temp, Float pressure, Float humidity, Float tempMin, Float tempMax, Float seaLevel, Float grndLevel) {
-        this.temp = temp;
-        this.pressure = pressure;
-        this.humidity = humidity;
-        this.tempMin = tempMin;
-        this.tempMax = tempMax;
-        this.seaLevel = seaLevel;
-        this.grndLevel = grndLevel;
-    }
-
-    /**
-     * @return The temp
-     */
-    public Float getTemp() {
+    public Double getTemp() {
         return temp;
     }
 
     /**
-     * @param temp The temp
+     * 
+     * @param temp
+     *     The temp
      */
-    public void setTemp(Float temp) {
+    public void setTemp(Double temp) {
         this.temp = temp;
     }
 
     /**
-     * @return The pressure
+     * 
+     * @return
+     *     The pressure
      */
-    public Float getPressure() {
+    public Integer getPressure() {
         return pressure;
     }
 
     /**
-     * @param pressure The pressure
+     * 
+     * @param pressure
+     *     The pressure
      */
-    public void setPressure(Float pressure) {
+    public void setPressure(Integer pressure) {
         this.pressure = pressure;
     }
 
     /**
-     * @return The humidity
+     * 
+     * @return
+     *     The humidity
      */
-    public Float getHumidity() {
+    public Integer getHumidity() {
         return humidity;
     }
 
     /**
-     * @param humidity The humidity
+     * 
+     * @param humidity
+     *     The humidity
      */
-    public void setHumidity(Float humidity) {
+    public void setHumidity(Integer humidity) {
         this.humidity = humidity;
     }
 
     /**
-     * @return The tempMin
+     * 
+     * @return
+     *     The tempMin
      */
-    public Float getTempMin() {
+    public Double getTempMin() {
         return tempMin;
     }
 
     /**
-     * @param tempMin The temp_min
+     * 
+     * @param tempMin
+     *     The temp_min
      */
-    public void setTempMin(Float tempMin) {
+    public void setTempMin(Double tempMin) {
         this.tempMin = tempMin;
     }
 
     /**
-     * @return The tempMax
+     * 
+     * @return
+     *     The tempMax
      */
-    public Float getTempMax() {
+    public Integer getTempMax() {
         return tempMax;
     }
 
     /**
-     * @param tempMax The temp_max
+     * 
+     * @param tempMax
+     *     The temp_max
      */
-    public void setTempMax(Float tempMax) {
+    public void setTempMax(Integer tempMax) {
         this.tempMax = tempMax;
-    }
-
-    /**
-     * @return The seaLevel
-     */
-    public Float getSeaLevel() {
-        return seaLevel;
-    }
-
-    /**
-     * @param seaLevel The sea_level
-     */
-    public void setSeaLevel(Float seaLevel) {
-        this.seaLevel = seaLevel;
-    }
-
-    /**
-     * @return The grndLevel
-     */
-    public Float getGrndLevel() {
-        return grndLevel;
-    }
-
-    /**
-     * @param grndLevel The grnd_level
-     */
-    public void setGrndLevel(Float grndLevel) {
-        this.grndLevel = grndLevel;
     }
 
 }

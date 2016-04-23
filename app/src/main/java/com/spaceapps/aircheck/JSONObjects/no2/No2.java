@@ -1,9 +1,6 @@
 
 package com.spaceapps.aircheck.JSONObjects.no2;
 
-import javax.annotation.Generated;
-
-@Generated("org.jsonschema2pojo")
 public class No2 {
 
     private Double precision;

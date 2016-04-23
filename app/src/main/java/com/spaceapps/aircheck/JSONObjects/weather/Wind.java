@@ -1,50 +1,44 @@
+
 package com.spaceapps.aircheck.JSONObjects.weather;
 
 public class Wind {
 
-    private Float speed;
-    private Float deg;
+    private Double speed;
+    private Integer deg;
 
     /**
-     * No args constructor for use in serialization
+     * 
+     * @return
+     *     The speed
      */
-    public Wind() {
-    }
-
-    /**
-     * @param speed
-     * @param deg
-     */
-    public Wind(Float speed, Float deg) {
-        this.speed = speed;
-        this.deg = deg;
-    }
-
-    /**
-     * @return The speed
-     */
-    public Float getSpeed() {
+    public Double getSpeed() {
         return speed;
     }
 
     /**
-     * @param speed The speed
+     * 
+     * @param speed
+     *     The speed
      */
-    public void setSpeed(Float speed) {
+    public void setSpeed(Double speed) {
         this.speed = speed;
     }
 
     /**
-     * @return The deg
+     * 
+     * @return
+     *     The deg
      */
-    public Float getDeg() {
+    public Integer getDeg() {
         return deg;
     }
 
     /**
-     * @param deg The deg
+     * 
+     * @param deg
+     *     The deg
      */
-    public void setDeg(Float deg) {
+    public void setDeg(Integer deg) {
         this.deg = deg;
     }
 
