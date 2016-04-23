@@ -48,9 +48,6 @@
     <string name="configuracion_item">Configuración</string>
     <string name="settings_item">Ajustes</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-
     <string name="prof_email">E-mail</string>
     <string name="prof_Name">Usuario</string>
     <string name="prof_Surname">Apellidos</string>
@@ -63,4 +60,13 @@
         AIzaSyB_24vZJMMNpfuLBCGIuCpsDfcrnrrFIeM
     </string>
 
+    <string name="cough">Cough</string>
+    <string name="wheezing">Wheezing</string>
+    <string name="nasal">Nasal obstruction</string>
+    <string name="sneeze">Sneeze</string>
+    <string name="eyes">Itchy eyes</string>
+    <string name="breath">Shortness of breath</string>
+    <string name="mouth">Dry mouth</string>
+    <string name="feed">FEEDBACK</string>
+    <string name="submit">Submit</string>
 </resources>

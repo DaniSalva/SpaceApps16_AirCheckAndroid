@@ -194,7 +194,7 @@ public class MapFragment extends Fragment implements LocationListener {
     @Override
     public void onResume() {
         super.onResume();
-       //mMapView.onResume();
+       mMapView.onResume();
     }
 
     @Override
