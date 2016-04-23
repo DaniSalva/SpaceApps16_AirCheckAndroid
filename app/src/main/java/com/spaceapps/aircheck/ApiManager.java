@@ -1,7 +1,9 @@
 package com.spaceapps.aircheck;
 
 import com.spaceapps.aircheck.JSONObjects.carbonMonoxide.CO;
+import com.spaceapps.aircheck.JSONObjects.no2.NitrousOxide;
 import com.spaceapps.aircheck.JSONObjects.ozone.O3;
+import com.spaceapps.aircheck.JSONObjects.so2.SO2;
 import com.spaceapps.aircheck.JSONObjects.weather.List;
 
 import retrofit.Callback;
@@ -56,6 +58,14 @@ public class ApiManager {
             // WARNING: Up to five decimal (it approximates the distance > number of decimals better accurazy)
             @GET("/pollution/v1/co/{lat},{lon}/current.json?appid="+API_CODE)
             public void getCO(@Path("lat") double lat, @Path("lon") double lon, Callback<CO> callback);
+
+            // http://api.openweathermap.org/pollution/v1/no2/0.0,10.0/current.json?appid=570b33d8c0275b0e221296d7b6190032
+            @GET("/pollution/v1/no2/{lat},{lon}/current.json?appid="+API_CODE)
+            public void getNO2(@Path("lat") double lat, @Path("lon") double lon, Callback<NitrousOxide> callback);
+
+            // http://api.openweathermap.org/pollution/v1/no2/0.0,10.0/current.json?appid=570b33d8c0275b0e221296d7b6190032
+            @GET("/pollution/v1/so2/{lat},{lon}/current.json?appid="+API_CODE)
+            public void getSO2(@Path("lat") double lat, @Path("lon") double lon, Callback<SO2> callback);
 
     }
 }
