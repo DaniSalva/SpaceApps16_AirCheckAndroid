@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ColorPrimary">#2196F3</color>
+    <color name="ColorPrimaryDark">#3F51B5</color>
+    <color name="color_accent">#ffffff</color>
+
+    <color name="color_black">#161616</color>
+    <color name="window_background">#FFF5F5F5</color>
+    <color name="dark_gray">#ff6c6c6c</color>
+    <color name="button_null_background_pressed_color">#e4f4ff</color>
+    <color name="link_text_color">#0d70b3</color>
+
+    <color name="title_profile_color">#44d3d9</color>
+
+    <color name="event_color_01">#59dbe0</color>
+    <color name="event_color_02">#f57f68</color>
+    <color name="event_color_03">#87d288</color>
+    <color name="event_color_04">#f8b552</color>
+</resources>
