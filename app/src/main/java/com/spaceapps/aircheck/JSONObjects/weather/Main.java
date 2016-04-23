@@ -3,8 +3,8 @@ package com.spaceapps.aircheck.JSONObjects.weather;
 public class Main {
 
     private Float temp;
-    private Integer pressure;
-    private Integer humidity;
+    private Float pressure;
+    private Float humidity;
     private Float tempMin;
     private Float tempMax;
     private Float seaLevel;
@@ -25,7 +25,7 @@ public class Main {
      * @param temp
      * @param tempMin
      */
-    public Main(Float temp, Integer pressure, Integer humidity, Float tempMin, Float tempMax, Float seaLevel, Float grndLevel) {
+    public Main(Float temp, Float pressure, Float humidity, Float tempMin, Float tempMax, Float seaLevel, Float grndLevel) {
         this.temp = temp;
         this.pressure = pressure;
         this.humidity = humidity;
@@ -52,28 +52,28 @@ public class Main {
     /**
      * @return The pressure
      */
-    public Integer getPressure() {
+    public Float getPressure() {
         return pressure;
     }
 
     /**
      * @param pressure The pressure
      */
-    public void setPressure(Integer pressure) {
+    public void setPressure(Float pressure) {
         this.pressure = pressure;
     }
 
     /**
      * @return The humidity
      */
-    public Integer getHumidity() {
+    public Float getHumidity() {
         return humidity;
     }
 
     /**
      * @param humidity The humidity
      */
-    public void setHumidity(Integer humidity) {
+    public void setHumidity(Float humidity) {
         this.humidity = humidity;
     }
 
