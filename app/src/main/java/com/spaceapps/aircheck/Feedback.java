@@ -1,9 +1,12 @@
 package com.spaceapps.aircheck;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -35,9 +38,10 @@ import butterknife.InjectView;
 public class Feedback extends AppCompatActivity  {
 
     @InjectView(R.id.submitfeedback) Button _submitButton;
-    @InjectView(R.id.result)
-    TextView _res;
+    @InjectView(R.id.result) TextView _res;
     ArrayList<String> selection= new ArrayList<String>();
+
+    final String URL="http://10.10.11.105:8080/insert_syntom";
 
     HashMap<String, String> postParams= new HashMap<>();
     @Override
@@ -143,69 +147,28 @@ public class Feedback extends AppCompatActivity  {
             final_fruit_selection+=pair.getKey() + " = " + pair.getValue();
             it.remove(); // avoids a ConcurrentModificationException
         }
-        _res.setText(final_fruit_selection);
-    }
-
-    public String  performPostCall(String requestURL,
-                                   HashMap<String, String> postDataParams) {
-
-        URL url;
-        String response = "";
-        try {
-            url = new URL(requestURL);
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000);
-            conn.setConnectTimeout(15000);
-            conn.setRequestMethod("POST");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-
-
-            OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            writer.write(getPostDataString(postDataParams));
-
-            writer.flush();
-            writer.close();
-            os.close();
-            int responseCode=conn.getResponseCode();
-
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                String line;
-                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while ((line=br.readLine()) != null) {
-                    response+=line;
-                }
+        //_res.setText(final_fruit_selection);
+        PostWS post= new PostWS(getApplicationContext(),new AsyncTaskListener<String>() {
+            @Override
+            public void onProgress(Integer progress) {
             }
-            else {
-                response="";
+            @Override
+            public void onInit() {
 
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        return response;
+            @Override
+            public void onFinish(String result) {
+                _res.setText(result);
+            }
+
+            @Override
+            public void onCancel() {
+            }
+        });
+        post.feedback(postParams);
     }
 
-    private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-        for(Map.Entry<String, String> entry : params.entrySet()){
-            if (first)
-                first = false;
-            else
-                result.append("&");
-
-            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-        }
-
-        return result.toString();
-    }
 
     private void setToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarC);
