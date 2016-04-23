@@ -48,7 +48,7 @@ public class ApiManager {
                 }
             });*/
 
-            @GET("/data/2.5/weather?&appid="+API_CODE)
+            @GET("/data/2.5/weather?&units=metric&appid="+API_CODE)
             public void getCurrentWeather(@Query("lat") double lat, @Query("lon") double lon, Callback<List> callback);
 
             // WARNING: Only one decimal value in LAT and LON
