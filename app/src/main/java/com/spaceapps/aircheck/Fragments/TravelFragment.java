@@ -52,8 +52,17 @@ public class TravelFragment extends Fragment {
     private Button btCPos;
     private AutoCompleteTextView acCity;
     private TextView tvTest;
+    private TextView tvData;
+    private TextView tvSug;
     private Geocoder gc;
     private ImageView imImg;
+
+    LocationManager locationManager;
+    Criteria criteria;
+    String provider;
+
+    Context ctx;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,7 +70,11 @@ public class TravelFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_travel, container,
                 false);
 
-        final Context ctx = this.getContext();
+        ctx = this.getContext();
+
+        locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, true);
 
         gc = new Geocoder(ctx, Locale.getDefault());
 
@@ -70,6 +83,8 @@ public class TravelFragment extends Fragment {
         btCPos = ButterKnife.findById(v, R.id.btCPos);
         acCity = ButterKnife.findById(v, R.id.acCity);
         tvTest = ButterKnife.findById(v, R.id.tvTest);
+        tvData = ButterKnife.findById(v, R.id.tvData);
+        tvSug = ButterKnife.findById(v, R.id.tvSug);
         imImg = ButterKnife.findById(v, R.id.imImg);
 
         /*
@@ -147,7 +162,6 @@ public class TravelFragment extends Fragment {
                     acCity.setAdapter(adapter);*/
 
                     //calculeData(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
-
                     getGoodness(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
                     //setImage(goodness);
 
@@ -162,9 +176,7 @@ public class TravelFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                LocationManager locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-                Criteria criteria = new Criteria();
-                String provider = locationManager.getBestProvider(criteria, true);
+
                 if (ActivityCompat.checkSelfPermission(v.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(v.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -196,7 +208,7 @@ public class TravelFragment extends Fragment {
     }
 
     private void setImage(int index) {
-        tvTest.setText("Air quality: " + index + "/10\n");
+        tvTest.setText("Air pollution: " + index + "/10\n");
         switch (index) {
             case 1:
                 imImg.setImageResource(R.drawable.emo10);
@@ -231,8 +243,12 @@ public class TravelFragment extends Fragment {
         }
     }
     private void getGoodness(double latitude, double longitude) {
-        final double lat = new BigDecimal(latitude).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
-        final double lon = new BigDecimal(longitude).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+        tvTest.setText("");
+        tvSug.setText("");
+        imImg.setImageBitmap(null);
+
+        final double lat = new BigDecimal(latitude).setScale(1, BigDecimal.ROUND_DOWN).doubleValue();
+        final double lon = new BigDecimal(longitude).setScale(1, BigDecimal.ROUND_DOWN).doubleValue();
 
         //final int[] status = {-1};
         ServerManager.getApiService().getRisk(lat, lon, new Callback<Risk>() {
@@ -248,6 +264,42 @@ public class TravelFragment extends Fragment {
             }
         });
 
+        ApiManager.getApiService().getStation(lat, lon, new Callback<ArrayList<Hub>>() {
+
+            @Override
+            public void success(ArrayList<Hub> hubs, Response response) {
+                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAA " + hubs.size());
+                for (Hub hu:hubs) {
+                    try {
+                        List<Address> addresses = gc.getFromLocation(hu.getStation().getCoord().getLat(), hu.getStation().getCoord().getLon(), 1);
+                        tvSug.setText(tvSug.getText() + addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName() +"\n");
+                                /*ServerManager.getApiService().getRisk(lat, lon, new Callback<Risk>() {
+
+                                    @Override
+                                    public void success(Risk risk, Response response) {
+                                        tvSug.setText(tvSug.getText() + String.valueOf(risk.getValue()) + " - " + "\n");
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB ") ;
+                                    }
+                                });*/
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //tvSug.setText(tvSug.getText() + hu.getStation().getName() + "\n");
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBB ");
+            }
+        });
+
+
+
     }
 
     private void calculeData(final double latitude, final double longitude) {
@@ -261,8 +313,10 @@ public class TravelFragment extends Fragment {
         final float weatherValue;
         final double[] no2Value = new double[1];
         final double[] so2Value = new double[1];
-        tvTest.setText("");
-        
+
+        tvData.setText("");
+        tvSug.setText("");
+
         ApiManager.getApiService().getStation(lat[0], lon[0], new Callback<ArrayList<Hub>>() {
             @Override
             public void success(ArrayList<Hub> hubs, Response response) {
@@ -279,34 +333,34 @@ public class TravelFragment extends Fragment {
                             @Override
                             public void success(O3 o3, Response response) {
                                 ozoneValue[0] = o3.getData();
-                                tvTest.setText("ozoneValue " + ozoneValue[0] + "\n");
+                                tvData.setText("Ozone: " + ozoneValue[0] + "\n");
                                 ApiManager.getApiService().getNO2(lat[1], lon[1], new Callback<NitrousOxide>() {
                                     @Override
                                     public void success(NitrousOxide no2, Response response) {
                                         no2Value[0] = no2.getData().getNo2().getValue();
-                                        tvTest.setText(tvTest.getText() + "no2Value " + no2Value[0] + "\n");
+                                        tvData.setText(tvData.getText() + "NO2: " + no2Value[0] + "\n");
                                         ApiManager.getApiService().getSO2(lat[1], lon[1], new Callback<SO2>() {
                                             @Override
                                             public void success(SO2 so2, Response response) {
                                                 so2Value[0] = so2.getData().get(0).getValue();
-                                                tvTest.setText(tvTest.getText() + "so2Value " + so2Value[0] + "\n");
+                                                tvData.setText(tvData.getText() + "SO2: " + so2Value[0] + "\n");
 
                                                 ApiManager.getApiService().getCurrentWeather(lat[1], lon[1], new Callback<Forecast>() {
                                                     @Override
                                                     public void success(Forecast forecast, Response response) {
-                                                        tvTest.setText(tvTest.getText() + "Succes " + forecast.getWeather().get(0).getMain());
+                                                        //tvTest.setText(tvTest.getText() + "Succes " + forecast.getWeather().get(0).getMain());
                                                     }
 
                                                     @Override
                                                     public void failure(RetrofitError error) {
-                                                        tvTest.setText("Failure ");
+                                                        //tvTest.setText("Failure ");
                                                     }
                                                 });
                                             }
 
                                             @Override
                                             public void failure(RetrofitError error) {
-                                                tvTest.setText("Failure so2" + error.getMessage());
+                                                //tvTest.setText("Failure so2" + error.getMessage());
                                             }
                                         });
                                     }

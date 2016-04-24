@@ -1,9 +1,6 @@
 package com.spaceapps.aircheck;
 
 import com.spaceapps.aircheck.GetMarkersObjects.GetRequest;
-import com.spaceapps.aircheck.JSONObjects.carbonMonoxide.CO;
-import com.spaceapps.aircheck.JSONObjects.ozone.O3;
-import com.spaceapps.aircheck.JSONObjects.weather.List;
 import com.spaceapps.aircheck.JSONObjects.Risk;
 
 import java.util.ArrayList;
@@ -11,7 +8,6 @@ import java.util.ArrayList;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Query;
@@ -41,7 +37,6 @@ public class ServerManager {
                                      @Query("longitude") double lon,
                                      @Query("radius") double rad, Callback<ArrayList<GetRequest>> callback);
 
-        @FormUrlEncoded
         @GET("/risk_value")
         public void getRisk(@Query("latitude") double lat,
                             @Query("longitude") double lon
