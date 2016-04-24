@@ -13,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +24,9 @@ import com.spaceapps.aircheck.Fragments.ViewPagerAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +56,17 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+        ServerManager.getApiService().getUsersFeedback(46.21, -0.9, 10, new Callback<GetRequest>() {
+            @Override
+            public void success(GetRequest getRequest, Response response) {
+                Log.d("DBG","Get: "+getRequest.getO3());
+            }
 
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("DBG","Error "+error.getMessage());
+            }
+        });
         /*
         Set toolbar, viewpager and tablayout
          */

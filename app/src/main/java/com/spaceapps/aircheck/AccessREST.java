@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -24,26 +25,19 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class AccessREST extends AsyncTask<HashMap<String,String>, Void, String> {
 
-    final String URL="http://10.10.11.105:8080/insert_syntom";
-
+    final String URL="http://40.68.44.128:8080/" +
+            "";
+    AsyncTaskListener asyncListener;
     private Exception exception;
 
     public AccessREST(Context appContext, AsyncTaskListener<String> asyncTaskListener) {
+        this.asyncListener=asyncTaskListener;
+
     }
 
     protected String doInBackground(HashMap<String,String>... urls) {
-        return performPostCall(urls[0]);
-    }
-
-    protected void onPostExecute(String feed) {
-
-    }
-
-    public String  performPostCall(HashMap<String, String> postDataParams) {
-
         URL url;
         String response = "";
-        Log.d("DBG","prueba");
         try {
             url = new URL(URL);
 
@@ -54,15 +48,12 @@ public class AccessREST extends AsyncTask<HashMap<String,String>, Void, String> 
             conn.setDoInput(true);
             conn.setDoOutput(true);
 
-            Log.d("DBG","prueba2");
-
-            Log.d("DBG",getPostDataString(postDataParams));
-            Log.d("DBG","prueba3");
+            String postData = getPostDataString(urls[0]);
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
-            writer.write(getPostDataString(postDataParams));
+            writer.write(postData);
 
             writer.flush();
             writer.close();
@@ -80,6 +71,7 @@ public class AccessREST extends AsyncTask<HashMap<String,String>, Void, String> 
                 response="";
 
             }
+            Log.d("DBG","response: "+response);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,19 +79,33 @@ public class AccessREST extends AsyncTask<HashMap<String,String>, Void, String> 
         return response;
     }
 
+    protected void onPostExecute(String feed) {
+        asyncListener.onFinish(feed);
+    }
+
+
     private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
+        Log.d("DBG","DBG");
         StringBuilder result = new StringBuilder();
+        Log.d("DBG","asda");
         boolean first = true;
-        for(Map.Entry<String, String> entry : params.entrySet()){
+        Log.d("DBG",""+params.get("eyes"));
+        Iterator it = params.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
             if (first)
                 first = false;
-            else
-                result.append("&");
+            else result.append("&");
 
-            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+            Log.d("dasdsa","asdasd");
+            Log.d("DBG",""+pair.getKey());
+            result.append(URLEncoder.encode((String) pair.getKey(), "UTF-8"));
             result.append("=");
-            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+            result.append(URLEncoder.encode((String) pair.getValue(), "UTF-8"));
+            it.remove(); // avoids a ConcurrentModificationException
         }
+
+        Log.d("DBG",result.toString());
 
         return result.toString();
     }

@@ -8,13 +8,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class PostWS {
+public class SendSyntomWS {
 
     private AccessREST accessWS;
     private Context appContext;
     private AsyncTaskListener authListener;
 
-    public PostWS(Context appContext, AsyncTaskListener authListener) {
+    public SendSyntomWS(Context appContext, AsyncTaskListener authListener) {
         this.appContext=appContext;
         this.authListener=authListener;
     }

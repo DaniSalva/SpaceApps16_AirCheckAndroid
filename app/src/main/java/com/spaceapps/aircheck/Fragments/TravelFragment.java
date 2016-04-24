@@ -77,9 +77,9 @@ public class TravelFragment extends Fragment {
         gc = new Geocoder(ctx, Locale.getDefault());
 
         // btCity = (Button) findViewById(R.id.btCity);
-        btSumbitCity = ButterKnife.findById(v,R.id.btSumbitCity);
-        acCity = ButterKnife.findById(v,R.id.acCity);
-        tvTest = ButterKnife.findById(v,R.id.tvTest);
+        btSumbitCity = ButterKnife.findById(v, R.id.btSumbitCity);
+        acCity = ButterKnife.findById(v, R.id.acCity);
+        tvTest = ButterKnife.findById(v, R.id.tvTest);
 
         acCity.addTextChangedListener(new TextWatcher() {
 
@@ -121,16 +121,15 @@ public class TravelFragment extends Fragment {
 
         acCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick (AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 tvTest.setText(addresses.get(position).toString());
-                addresses.get(1).
+                //addresses.get(1).
             }
         });
 
 
-            btSumbitCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        return v;
+    }  }
                /* tvTest.setText(acCity.getText().toString());
                 try {
                     List<Address> addresses= gc.getFromLocationName(acCity.getText().toString(), 10); // get the found Address Objects
@@ -152,13 +151,12 @@ public class TravelFragment extends Fragment {
                 }
 
             }*/
-        });
+        //});
 
 
-        return v;
-    }
+        //return v;
 
-    @Override
+    /*@Override
     public void onResume() {
         super.onResume();
     }
@@ -171,5 +169,4 @@ public class TravelFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-    }
-}
+    }*/

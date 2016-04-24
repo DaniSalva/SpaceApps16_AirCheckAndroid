@@ -11,11 +11,13 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,23 +31,37 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.spaceapps.aircheck.Feedback;
+import com.spaceapps.aircheck.GetRequest;
 import com.spaceapps.aircheck.R;
+import com.spaceapps.aircheck.ServerManager;
 
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Autor: Daniel Salvador Urgel
@@ -62,6 +78,9 @@ public class MapFragment extends Fragment implements LocationListener {
     private GoogleMap googleMap;
     private MarkerOptions marker;
     private Location current;
+    private final LatLng UPV = new LatLng(39.481106, -0.340987);
+
+    final static String URL ="http://40.68.44.128:8080/close_users";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,6 +96,13 @@ public class MapFragment extends Fragment implements LocationListener {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), Feedback.class);
+                Log.d("DBG",""+googleMap.getMyLocation().getLatitude());
+                Log.d("DBG",""+googleMap.getMyLocation().getLongitude());
+                if(current!=null){
+                    i.putExtra("Lat",""+current.getLatitude());
+                    i.putExtra("Long",""+current.getLongitude());
+                }
+
                 startActivity(i);
             }
         });
@@ -106,18 +132,14 @@ public class MapFragment extends Fragment implements LocationListener {
             double latitude = 41.684691;
             double longitude = -0.884999;
 
-            // create marker
             marker = new MarkerOptions().position(
                     new LatLng(latitude, longitude)).title("CIRCE");
 
-
-            // Changing marker icon
             marker.icon(BitmapDescriptorFactory
                     .defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
             // adding marker
             googleMap.addMarker(marker);
-
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(41.684691, -0.884999)).zoom(12).build();
@@ -127,11 +149,17 @@ public class MapFragment extends Fragment implements LocationListener {
             // Enabling MyLocation Layer of Google Map
             googleMap.setMyLocationEnabled(true);
 
+
             // Getting LocationManager object from System Service LOCATION_SERVICE
             LocationManager locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
             // Creating a criteria object to retrieve provider
             Criteria criteria = new Criteria();
+
+            if(googleMap.getMyLocation()!=null){
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(googleMap.getMyLocation().getLatitude(),
+                        googleMap.getMyLocation().getLongitude()),15));
+            }
 
             // Getting the name of the best provider
             String provider = locationManager.getBestProvider(criteria, true);
@@ -147,15 +175,80 @@ public class MapFragment extends Fragment implements LocationListener {
             if(location!=null){
                 onLocationChanged(location);
             }
-            locationManager.requestLocationUpdates(provider, 20000, 0, this);
+            locationManager.requestLocationUpdates(provider, 10000, 100, this);
+
+            final LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+            googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+
+                @Override
+                public void onCameraChange(CameraPosition arg0) {
+                    // Move camera.
+                    //googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 10));
+                    // Remove listener to prevent position reset on camera move.
+                    //googleMap.setOnCameraChangeListener(null);
+
+                    Log.d("DBG","MOVE MAP");
+                    //new HttpAsyncTask().execute(""+googleMap.getCameraPosition().target.latitude,
+                    //        ""+googleMap.getCameraPosition().target.longitude,""+10);
+                }
+
+            });
         }
 
         // Perform any camera updates here
         return v;
     }
 
+    private void addMarkersToMap() {
+
+        ServerManager.getApiService().getUsersFeedback(46.21, -0.9, 10, new Callback<ArrayList<GetRequest>>() {
+            @Override
+            public void success(ArrayList<GetRequest> getRequests, Response response) {
+                /*googleMap.clear();
+                for (int i = 0; i < getRequests.size(); i++) {
+                    LatLng ll = new LatLng(getRequests.get(i).getLoc().get(0), getRequests.get(i).getLoc().get(1));
+                    BitmapDescriptor bitmapMarker;
+                    switch (getRequests.get(i).getState()) {
+                        case 0:
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+                            Log.i("DBG", "RED");
+                            break;
+                        case 1:
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+                            Log.i("DBG", "GREEN");
+                            break;
+                        case 2:
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
+                            Log.i("DBG", "ORANGE");
+                            break;
+                        default:
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+                            Log.i("DBG", "DEFAULT");
+                            break;
+                    }
+                    googleMap.addMarker(new MarkerOptions().position(ll).title(getRequests.get(i).getUser())
+                            .snippet(getRequests.get(i).toString()).icon(bitmapMarker));
+                }*/
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+
+    }
+    public void moveCamera(View view) {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(UPV));
+    }
+
+
+
+
     @Override
     public void onLocationChanged(Location location) {
+        Log.d("DBG","LOC");
         // Getting latitude of the current location
         double latitude = location.getLatitude();
 
@@ -213,5 +306,66 @@ public class MapFragment extends Fragment implements LocationListener {
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+
+            return GET(urls[0],urls[1],urls[2]);
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getActivity().getBaseContext(), "Received!", Toast.LENGTH_LONG).show();
+            Log.d("DBG",result);
+        }
+    }
+    public static String GET(String lat,String longi,String rad){
+        InputStream inputStream = null;
+        String result = "";
+        String u= URL+"?latitude="+lat+"&longitude="+longi+"&radius="+rad;
+        URL ur = null;
+        String response="";
+        try {
+            ur = new URL(u);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+
+            HttpURLConnection conn = (HttpURLConnection) ur.openConnection();
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("GET");
+
+            InputStream in = conn.getInputStream();
+
+            InputStreamReader isw = new InputStreamReader(in);
+
+            response = convertInputStreamToString(in);
+            Log.d("DBG","response: "+response);
+            int data = isw.read();
+            while (data != -1) {
+                char current = (char) data;
+                data = isw.read();
+                System.out.print(current);
+            }
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+
+        return response;
+    }
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+
     }
 }

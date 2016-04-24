@@ -1,36 +1,22 @@
 package com.spaceapps.aircheck;
 
-import android.content.DialogInterface;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import javax.net.ssl.HttpsURLConnection;
+import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -41,32 +27,43 @@ public class Feedback extends AppCompatActivity  {
     @InjectView(R.id.result) TextView _res;
     ArrayList<String> selection= new ArrayList<String>();
 
-    final String URL="http://10.10.11.105:8080/insert_syntom";
+    final String URL="http://40.68.44.128:8080/insert_syntom";
 
-    HashMap<String, String> postParams= new HashMap<>();
+    public HashMap<String, String> postParams= new HashMap<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
         ButterKnife.inject(this);
-
+        Intent intent = getIntent();
+        intent.getStringExtra("Lat");
+        intent.getStringExtra("Long");
         addListenerOnButton();
         setToolbar();
+
+        fillHashMap();
+
+    }
+
+    public void fillHashMap(){
+        Random r = new Random();
+        double randomlat = 41.65 + (41.6559 - 41.65) * r.nextDouble();
+        double randomlong = -0.8800 + (-0.8826 - -0.8806) * r.nextDouble();
+
+        postParams.put("lat",""+randomlat);
+        postParams.put("long",""+randomlong);
+        postParams.put("date","20161123");
+        postParams.put("user","Almadapa");
+
         postParams.put("cough","no");
-        postParams.put("breathe","no");
+        postParams.put("breath","no");
         postParams.put("eyes","no");
         postParams.put("mouth","no");
         postParams.put("sneeze","no");
         postParams.put("wheeze","no");
         postParams.put("nasal","no");
 
-        postParams.put("lat","17.4");
-        postParams.put("long","10.2");
-        postParams.put("date","20161123");
-        postParams.put("user","Almadapa");
-
     }
-
     public void selectItems( View view) {
         boolean checked = ((CheckBox) view).isChecked();
         switch (view.getId())
@@ -74,11 +71,11 @@ public class Feedback extends AppCompatActivity  {
         {
             case R.id.breathcheck:
                 if (checked) {
-                    postParams.remove("breathe");
+                    postParams.remove("breath");
                     postParams.put("breathe","yes");
                 } else {
-                    postParams.remove("breathe");
-                    postParams.put("breathe","no");
+                    postParams.remove("breath");
+                    postParams.put("breath","no");
                 }
                 break;
 
@@ -140,33 +137,37 @@ public class Feedback extends AppCompatActivity  {
         }
     }
     public void FinalSelection( View view) {
-        String final_fruit_selection = "";
-        Iterator it = postParams.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            final_fruit_selection+=pair.getKey() + " = " + pair.getValue();
-            it.remove(); // avoids a ConcurrentModificationException
-        }
-        //_res.setText(final_fruit_selection);
-        PostWS post= new PostWS(getApplicationContext(),new AsyncTaskListener<String>() {
+        fillHashMap();
+        //HashMap<String,String> map = postParams;
+
+        ServerManager.getApiService().sendFeedback(postParams.get("latitude"),postParams.get("longitude"),postParams.get("user"),postParams.get("date"),
+                postParams.get("breathe"),postParams.get("cough"),postParams.get("wheeze"),postParams.get("eyes"),postParams.get("mouth"),
+                postParams.get("nasal"),postParams.get("sneeze"));
+
+        /*final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Autenticando...");
+
+        SendSyntomWS post= new SendSyntomWS(getApplicationContext(),new AsyncTaskListener<String>() {
             @Override
             public void onProgress(Integer progress) {
             }
             @Override
             public void onInit() {
-
+                progressDialog.show();
             }
 
             @Override
             public void onFinish(String result) {
                 _res.setText(result);
+                finish();
             }
 
             @Override
             public void onCancel() {
             }
         });
-        post.feedback(postParams);
+        post.feedback(map);*/
     }
 
 
@@ -183,15 +184,11 @@ public class Feedback extends AppCompatActivity  {
     }
     // get the selected dropdown list value
     public void addListenerOnButton() {
-
-
         _submitButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 FinalSelection(v);
             }
-
         });
     }
 
