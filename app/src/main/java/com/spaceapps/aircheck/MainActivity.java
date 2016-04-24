@@ -23,6 +23,8 @@ import com.spaceapps.aircheck.Fragments.TravelFragment;
 import com.spaceapps.aircheck.Fragments.ViewPagerAdapter;
 import com.spaceapps.aircheck.JSONObjects.station.StationArray;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import retrofit.Callback;
@@ -56,36 +58,20 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
-<<<<<<< HEAD
-        ServerManager.getApiService().getUsersFeedback(46.21, -0.9, 10, new Callback<GetRequest>() {
-            @Override
-            public void success(GetRequest getRequest, Response response) {
-                Log.d("DBG","Get: "+getRequest.getO3());
-=======
 
         ApiManager.getApiService().getStation(41.7, -0.9, new Callback<StationArray>() {
             @Override
             public void success(StationArray hub, Response response) {
                 Log.d("TAG", hub.getStations().get(0).getStation().getCoord().getLat()
                         + " " + hub.getStations().get(0).getStation().getCoord().getLon());
->>>>>>> f5682f8fc91782e939c4bc1b93b15136a651e66f
             }
 
             @Override
             public void failure(RetrofitError error) {
-<<<<<<< HEAD
                 Log.d("DBG","Error "+error.getMessage());
             }
         });
-=======
-                Log.d("ERROR", error.getMessage());
-            }
-        });
 
->>>>>>> f5682f8fc91782e939c4bc1b93b15136a651e66f
-        /*
-        Set toolbar, viewpager and tablayout
-         */
         setToolbar(); // Setear Toolbar como action bar
 
         _viewPager = (ViewPager) findViewById(R.id.viewpager);
