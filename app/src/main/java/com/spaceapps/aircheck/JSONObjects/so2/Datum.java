@@ -6,7 +6,7 @@ public class Datum {
 
     private Double precision;
     private Double pressure;
-    private Integer value;
+    private Double value;
 
     /**
      * No args constructor for use in serialization
@@ -21,7 +21,7 @@ public class Datum {
      * @param pressure
      * @param value
      */
-    public Datum(Double precision, Double pressure, Integer value) {
+    public Datum(Double precision, Double pressure, Double value) {
         this.precision = precision;
         this.pressure = pressure;
         this.value = value;
@@ -68,7 +68,7 @@ public class Datum {
      * @return
      *     The value
      */
-    public Integer getValue() {
+    public Double getValue() {
         return value;
     }
 
@@ -77,7 +77,7 @@ public class Datum {
      * @param value
      *     The value
      */
-    public void setValue(Integer value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 

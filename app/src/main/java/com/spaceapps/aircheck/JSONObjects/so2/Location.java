@@ -4,7 +4,7 @@ package com.spaceapps.aircheck.JSONObjects.so2;
 
 public class Location {
 
-    private Integer latitude;
+    private Double latitude;
     private Double longitude;
 
     /**
@@ -19,7 +19,7 @@ public class Location {
      * @param longitude
      * @param latitude
      */
-    public Location(Integer latitude, Double longitude) {
+    public Location(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -29,7 +29,7 @@ public class Location {
      * @return
      *     The latitude
      */
-    public Integer getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
@@ -38,7 +38,7 @@ public class Location {
      * @param latitude
      *     The latitude
      */
-    public void setLatitude(Integer latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
