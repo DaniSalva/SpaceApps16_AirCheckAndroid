@@ -161,7 +161,7 @@ public class TravelFragment extends Fragment {
 
                     acCity.setAdapter(adapter);*/
 
-                    //calculeData(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+                    calculeData(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
                     getGoodness(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
                     //setImage(goodness);
 
@@ -197,7 +197,7 @@ public class TravelFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                //calculeData(location.getLatitude(), location.getLongitude());
+                calculeData(location.getLatitude(), location.getLongitude());
                 getGoodness(location.getLatitude(), location.getLongitude());
                 //setImage(goodness);
             }
@@ -386,7 +386,63 @@ public class TravelFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
+                ApiManager.getApiService().getCO(lat[1], lon[1], new Callback<CO>() {
+                    @Override
+                    public void success(CO co, Response response) {
+                        coValue[0] = co.getData().get(0).getValue();
+                        ApiManager.getApiService().getOzone(lat[1], lon[1], new Callback<O3>() {
+                            @Override
+                            public void success(O3 o3, Response response) {
+                                ozoneValue[0] = o3.getData();
+                                tvData.setText("Ozone: " + ozoneValue[0] + "\n");
+                                ApiManager.getApiService().getNO2(lat[1], lon[1], new Callback<NitrousOxide>() {
+                                    @Override
+                                    public void success(NitrousOxide no2, Response response) {
+                                        no2Value[0] = no2.getData().getNo2().getValue();
+                                        tvData.setText(tvData.getText() + "NO2: " + no2Value[0] + "\n");
+                                        ApiManager.getApiService().getSO2(lat[1], lon[1], new Callback<SO2>() {
+                                            @Override
+                                            public void success(SO2 so2, Response response) {
+                                                so2Value[0] = so2.getData().get(0).getValue();
+                                                tvData.setText(tvData.getText() + "SO2: " + so2Value[0] + "\n");
 
+                                                ApiManager.getApiService().getCurrentWeather(lat[1], lon[1], new Callback<Forecast>() {
+                                                    @Override
+                                                    public void success(Forecast forecast, Response response) {
+                                                        //tvTest.setText(tvTest.getText() + "Succes " + forecast.getWeather().get(0).getMain());
+                                                    }
+
+                                                    @Override
+                                                    public void failure(RetrofitError error) {
+                                                        //tvTest.setText("Failure ");
+                                                    }
+                                                });
+                                            }
+
+                                            @Override
+                                            public void failure(RetrofitError error) {
+                                                //tvTest.setText("Failure so2" + error.getMessage());
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
             }
         });
 
