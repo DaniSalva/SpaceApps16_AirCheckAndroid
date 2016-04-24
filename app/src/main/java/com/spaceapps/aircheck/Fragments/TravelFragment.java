@@ -210,41 +210,41 @@ public class TravelFragment extends Fragment {
     private void setImage(int index) {
         tvTest.setText("Air pollution: " + index + "/10\n");
         switch (index) {
-            case 1:
+            case 0:
                 imImg.setImageResource(R.drawable.emo10);
                 break;
-            case 2:
+            case 1:
                 imImg.setImageResource(R.drawable.emo9);
                 break;
-            case 3:
+            case 2:
                 imImg.setImageResource(R.drawable.emo8);
                 break;
-            case 4:
+            case 3:
                 imImg.setImageResource(R.drawable.emo7);
                 break;
-            case 5:
+            case 4:
                 imImg.setImageResource(R.drawable.emo6);
                 break;
-            case 6:
+            case 5:
                 imImg.setImageResource(R.drawable.emo5);
                 break;
-            case 7:
+            case 6:
                 imImg.setImageResource(R.drawable.emo4);
                 break;
-            case 8:
+            case 7:
                 imImg.setImageResource(R.drawable.emo3);
                 break;
-            case 9:
+            case 8:
                 imImg.setImageResource(R.drawable.emo2);
                 break;
-            case 10:
+            case 9:
                 imImg.setImageResource(R.drawable.emo1);
                 break;
         }
     }
     private void getGoodness(double latitude, double longitude) {
         tvTest.setText("");
-        tvSug.setText("Suggested cities: \n");
+        tvSug.setText("");
         imImg.setImageBitmap(null);
 
         final double lat = new BigDecimal(latitude).setScale(1, BigDecimal.ROUND_DOWN).doubleValue();
@@ -269,6 +269,9 @@ public class TravelFragment extends Fragment {
 
             @Override
             public void success(ArrayList<Hub> hubs, Response response) {
+                if (hubs.size() > 0) {
+                    tvSug.setText("\n");
+                }
                 for (Hub hu:hubs) {
                     try {
                         final List<Address> addresses = gc.getFromLocation(hu.getStation().getCoord().getLat(), hu.getStation().getCoord().getLon(), 1);
@@ -278,7 +281,7 @@ public class TravelFragment extends Fragment {
                             @Override
                             public void success(Risk risk, Response response) {
                                 if (!cities.contains(tvSug.getText() + addresses.get(0).getLocality())) {
-                                    tvSug.setText(tvSug.getText() + addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName() + " - " + String.valueOf(risk.getValue()) + "\n");
+                                    tvSug.setText(tvSug.getText() + addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName() + ": " + String.valueOf(risk.getValue()) + "/10\n");
                                     //tvSug.setText(tvSug.getText() + String.valueOf(risk.getValue()) + " - " + "\n");
                                     cities.add(tvSug.getText() + addresses.get(0).getLocality());
                                 }
