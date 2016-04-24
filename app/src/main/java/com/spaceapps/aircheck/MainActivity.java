@@ -21,9 +21,13 @@ import android.widget.TextView;
 import com.spaceapps.aircheck.Fragments.MapFragment;
 import com.spaceapps.aircheck.Fragments.TravelFragment;
 import com.spaceapps.aircheck.Fragments.ViewPagerAdapter;
+import com.spaceapps.aircheck.JSONObjects.station.StationArray;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,15 +35,14 @@ public class MainActivity extends AppCompatActivity {
     static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
 */
 
+    @InjectView(R.id.viewpager)
+    ViewPager _viewPager;
+    @InjectView(R.id.tabs)
+    TabLayout _tabLayout;
     private DrawerLayout drawerLayout;
     private String drawerTitle;
-
-
-    @InjectView(R.id.viewpager) ViewPager _viewPager;
     private TextView _usernameHeader;
     private TextView _emailHeader;
-    @InjectView(R.id.tabs) TabLayout _tabLayout;
-
     private int[] tabIcons = {
             R.drawable.ic_map,
             R.drawable.ic_stats
@@ -54,6 +57,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
+        ApiManager.getApiService().getStation(41.7, -0.9, new Callback<StationArray>() {
+            @Override
+            public void success(StationArray hub, Response response) {
+                Log.d("TAG", hub.getStations().get(0).getStation().getCoord().getLat()
+                        + " " + hub.getStations().get(0).getStation().getCoord().getLon());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("ERROR", error.getMessage());
+            }
+        });
+
         /*
         Set toolbar, viewpager and tablayout
          */
@@ -65,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         _tabLayout = (TabLayout) findViewById(R.id.tabs);
         _tabLayout.setupWithViewPager(_viewPager);
 
-        View header = (View)getLayoutInflater().inflate(R.layout.nav_header, null);
+        View header = (View) getLayoutInflater().inflate(R.layout.nav_header, null);
         _usernameHeader = (TextView) header.findViewById(R.id.usernameHeader);
         _emailHeader = (TextView) header.findViewById(R.id.emailHeader);
 
@@ -81,10 +97,11 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * ViewPager setup
+     *
      * @param viewPager
      */
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(),MainActivity.this);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), MainActivity.this);
 
         /**
          * Add Fragments which are in the viewpager's tab
@@ -112,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Navigation Drawer Setup
+     *
      * @param navigationView
      */
     private void setupDrawerContent(final NavigationView navigationView) {
@@ -178,9 +196,10 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
 
     }
+
     @Override
     public void onDestroy() {
-        Log.d("DBG","Destroy");
+        Log.d("DBG", "Destroy");
         super.onDestroy();
     }
 
