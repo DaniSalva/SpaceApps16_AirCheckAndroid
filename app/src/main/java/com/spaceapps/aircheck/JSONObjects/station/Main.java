@@ -1,13 +1,11 @@
 
-package com.spaceapps.aircheck.JSONObjects.weather;
+package com.spaceapps.aircheck.JSONObjects.station;
 
 public class Main {
 
     private Double temp;
     private Integer pressure;
     private Integer humidity;
-    private Double tempMin;
-    private Integer tempMax;
 
     /**
      * 
@@ -61,42 +59,6 @@ public class Main {
      */
     public void setHumidity(Integer humidity) {
         this.humidity = humidity;
-    }
-
-    /**
-     * 
-     * @return
-     *     The tempMin
-     */
-    public Double getTempMin() {
-        return tempMin;
-    }
-
-    /**
-     * 
-     * @param tempMin
-     *     The temp_min
-     */
-    public void setTempMin(Double tempMin) {
-        this.tempMin = tempMin;
-    }
-
-    /**
-     * 
-     * @return
-     *     The tempMax
-     */
-    public Integer getTempMax() {
-        return tempMax;
-    }
-
-    /**
-     * 
-     * @param tempMax
-     *     The temp_max
-     */
-    public void setTempMax(Integer tempMax) {
-        this.tempMax = tempMax;
     }
 
 }

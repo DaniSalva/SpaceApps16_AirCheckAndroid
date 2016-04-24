@@ -1,67 +1,85 @@
-package com.spaceapps.aircheck.JSONObjects.ozone;
 
-public class Example {
+package com.spaceapps.aircheck.JSONObjects.so2;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SO2 {
 
     private String time;
     private Location location;
-    private Float data;
+    private List<Datum> data = new ArrayList<Datum>();
 
     /**
      * No args constructor for use in serialization
+     * 
      */
-    public Example() {
+    public SO2() {
     }
 
     /**
+     * 
      * @param time
      * @param location
      * @param data
      */
-    public Example(String time, Location location, Float data) {
+    public SO2(String time, Location location, List<Datum> data) {
         this.time = time;
         this.location = location;
         this.data = data;
     }
 
     /**
-     * @return The time
+     * 
+     * @return
+     *     The time
      */
     public String getTime() {
         return time;
     }
 
     /**
-     * @param time The time
+     * 
+     * @param time
+     *     The time
      */
     public void setTime(String time) {
         this.time = time;
     }
 
     /**
-     * @return The location
+     * 
+     * @return
+     *     The location
      */
     public Location getLocation() {
         return location;
     }
 
     /**
-     * @param location The location
+     * 
+     * @param location
+     *     The location
      */
     public void setLocation(Location location) {
         this.location = location;
     }
 
     /**
-     * @return The data
+     * 
+     * @return
+     *     The data
      */
-    public Float getData() {
+    public List<Datum> getData() {
         return data;
     }
 
     /**
-     * @param data The data
+     * 
+     * @param data
+     *     The data
      */
-    public void setData(Float data) {
+    public void setData(List<Datum> data) {
         this.data = data;
     }
 

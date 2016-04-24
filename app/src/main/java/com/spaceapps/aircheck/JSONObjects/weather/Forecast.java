@@ -2,50 +2,219 @@
 package com.spaceapps.aircheck.JSONObjects.weather;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Forecast {
 
-    private String message;
-    private String cod;
-    private Integer count;
-    private java.util.List<List> list = new ArrayList<List>();
+    private Coord coord;
+    private List<Weather> weather = new ArrayList<Weather>();
+    private String base;
+    private Main main;
+    private Integer visibility;
+    private Wind wind;
+    private Clouds clouds;
+    private Integer dt;
+    private Sys sys;
+    private Integer id;
+    private String name;
+    private Integer cod;
+
     /**
-     * No args constructor for use in serialization
      * 
+     * @return
+     *     The coord
      */
-    public Forecast() {
+    public Coord getCoord() {
+        return coord;
     }
 
     /**
      * 
-     * @param message
-     * @param count
-     * @param cod
-     * @param list
+     * @param coord
+     *     The coord
      */
-    public Forecast(String message, String cod, Integer count, java.util.List<List> list) {
-        this.message = message;
-        this.cod = cod;
-        this.count = count;
-        this.list = list;
+    public void setCoord(Coord coord) {
+        this.coord = coord;
     }
 
     /**
      * 
      * @return
-     *     The message
+     *     The weather
      */
-    public String getMessage() {
-        return message;
+    public List<Weather> getWeather() {
+        return weather;
     }
 
     /**
      * 
-     * @param message
-     *     The message
+     * @param weather
+     *     The weather
      */
-    public void setMessage(String message) {
-        this.message = message;
+    public void setWeather(List<Weather> weather) {
+        this.weather = weather;
+    }
+
+    /**
+     * 
+     * @return
+     *     The base
+     */
+    public String getBase() {
+        return base;
+    }
+
+    /**
+     * 
+     * @param base
+     *     The base
+     */
+    public void setBase(String base) {
+        this.base = base;
+    }
+
+    /**
+     * 
+     * @return
+     *     The main
+     */
+    public Main getMain() {
+        return main;
+    }
+
+    /**
+     * 
+     * @param main
+     *     The main
+     */
+    public void setMain(Main main) {
+        this.main = main;
+    }
+
+    /**
+     * 
+     * @return
+     *     The visibility
+     */
+    public Integer getVisibility() {
+        return visibility;
+    }
+
+    /**
+     * 
+     * @param visibility
+     *     The visibility
+     */
+    public void setVisibility(Integer visibility) {
+        this.visibility = visibility;
+    }
+
+    /**
+     * 
+     * @return
+     *     The wind
+     */
+    public Wind getWind() {
+        return wind;
+    }
+
+    /**
+     * 
+     * @param wind
+     *     The wind
+     */
+    public void setWind(Wind wind) {
+        this.wind = wind;
+    }
+
+    /**
+     * 
+     * @return
+     *     The clouds
+     */
+    public Clouds getClouds() {
+        return clouds;
+    }
+
+    /**
+     * 
+     * @param clouds
+     *     The clouds
+     */
+    public void setClouds(Clouds clouds) {
+        this.clouds = clouds;
+    }
+
+    /**
+     * 
+     * @return
+     *     The dt
+     */
+    public Integer getDt() {
+        return dt;
+    }
+
+    /**
+     * 
+     * @param dt
+     *     The dt
+     */
+    public void setDt(Integer dt) {
+        this.dt = dt;
+    }
+
+    /**
+     * 
+     * @return
+     *     The sys
+     */
+    public Sys getSys() {
+        return sys;
+    }
+
+    /**
+     * 
+     * @param sys
+     *     The sys
+     */
+    public void setSys(Sys sys) {
+        this.sys = sys;
+    }
+
+    /**
+     * 
+     * @return
+     *     The id
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * 
+     * @param id
+     *     The id
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * 
+     * @return
+     *     The name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * 
+     * @param name
+     *     The name
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -53,7 +222,7 @@ public class Forecast {
      * @return
      *     The cod
      */
-    public String getCod() {
+    public Integer getCod() {
         return cod;
     }
 
@@ -62,44 +231,8 @@ public class Forecast {
      * @param cod
      *     The cod
      */
-    public void setCod(String cod) {
+    public void setCod(Integer cod) {
         this.cod = cod;
-    }
-
-    /**
-     * 
-     * @return
-     *     The count
-     */
-    public Integer getCount() {
-        return count;
-    }
-
-    /**
-     * 
-     * @param count
-     *     The count
-     */
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    /**
-     * 
-     * @return
-     *     The list
-     */
-    public java.util.List<List> getList() {
-        return list;
-    }
-
-    /**
-     * 
-     * @param list
-     *     The list
-     */
-    public void setList(java.util.List<List> list) {
-        this.list = list;
     }
 
 }

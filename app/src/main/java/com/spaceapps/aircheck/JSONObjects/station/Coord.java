@@ -1,5 +1,5 @@
 
-package com.spaceapps.aircheck.JSONObjects.weather;
+package com.spaceapps.aircheck.JSONObjects.station;
 
 public class Coord {
 
