@@ -142,7 +142,7 @@ public class TravelFragment extends Fragment {
 
                         //calculeData(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
 
-                        int goodness = getGoodness(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+                    int goodness = getGoodness(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
 
                     } catch (IOException e) {
                         e.printStackTrace();
