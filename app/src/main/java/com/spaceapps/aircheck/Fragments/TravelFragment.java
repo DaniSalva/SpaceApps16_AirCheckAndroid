@@ -199,34 +199,34 @@ public class TravelFragment extends Fragment {
         tvTest.setText("Air quality: " + index + "/10\n");
         switch (index) {
             case 1:
-                imImg.setImageResource(R.drawable.emo1);
+                imImg.setImageResource(R.drawable.emo10);
                 break;
             case 2:
-                imImg.setImageResource(R.drawable.emo2);
-                break;
-            case 3:
-                imImg.setImageResource(R.drawable.emo3);
-                break;
-            case 4:
-                imImg.setImageResource(R.drawable.emo4);
-                break;
-            case 5:
-                imImg.setImageResource(R.drawable.emo5);
-                break;
-            case 6:
-                imImg.setImageResource(R.drawable.emo6);
-                break;
-            case 7:
-                imImg.setImageResource(R.drawable.emo7);
-                break;
-            case 8:
-                imImg.setImageResource(R.drawable.emo8);
-                break;
-            case 9:
                 imImg.setImageResource(R.drawable.emo9);
                 break;
+            case 3:
+                imImg.setImageResource(R.drawable.emo8);
+                break;
+            case 4:
+                imImg.setImageResource(R.drawable.emo7);
+                break;
+            case 5:
+                imImg.setImageResource(R.drawable.emo6);
+                break;
+            case 6:
+                imImg.setImageResource(R.drawable.emo5);
+                break;
+            case 7:
+                imImg.setImageResource(R.drawable.emo4);
+                break;
+            case 8:
+                imImg.setImageResource(R.drawable.emo3);
+                break;
+            case 9:
+                imImg.setImageResource(R.drawable.emo2);
+                break;
             case 10:
-                imImg.setImageResource(R.drawable.emo10);
+                imImg.setImageResource(R.drawable.emo1);
                 break;
         }
     }
