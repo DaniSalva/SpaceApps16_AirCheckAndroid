@@ -4,8 +4,10 @@ import com.spaceapps.aircheck.JSONObjects.carbonMonoxide.CO;
 import com.spaceapps.aircheck.JSONObjects.no2.NitrousOxide;
 import com.spaceapps.aircheck.JSONObjects.ozone.O3;
 import com.spaceapps.aircheck.JSONObjects.so2.SO2;
-import com.spaceapps.aircheck.JSONObjects.station.StationArray;
+import com.spaceapps.aircheck.JSONObjects.station.Hub;
 import com.spaceapps.aircheck.JSONObjects.weather.Forecast;
+
+import java.util.ArrayList;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -70,7 +72,7 @@ public class ApiManager {
 
             //http://api.openweathermap.org/data/2.5/station/find?lat=41&lon=2&cnt=1&appid=570b33d8c0275b0e221296d7b6190032
             @GET("/data/2.5/station/find?cnt=1&appid="+API_CODE)
-            public void getStation(@Query("lat") double lat, @Query("lon") double lon, Callback<StationArray> callback);
+            public void getStation(@Query("lat") double lat, @Query("lon") double lon, Callback<ArrayList<Hub>> callback);
 
 
     }

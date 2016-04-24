@@ -21,13 +21,9 @@ import android.widget.TextView;
 import com.spaceapps.aircheck.Fragments.MapFragment;
 import com.spaceapps.aircheck.Fragments.TravelFragment;
 import com.spaceapps.aircheck.Fragments.ViewPagerAdapter;
-import com.spaceapps.aircheck.JSONObjects.station.StationArray;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,19 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
-
-        ApiManager.getApiService().getStation(41.7, -0.9, new Callback<StationArray>() {
-            @Override
-            public void success(StationArray hub, Response response) {
-                Log.d("TAG", hub.getStations().get(0).getStation().getCoord().getLat()
-                        + " " + hub.getStations().get(0).getStation().getCoord().getLon());
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d("ERROR", error.getMessage());
-            }
-        });
 
         /*
         Set toolbar, viewpager and tablayout
