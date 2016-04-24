@@ -25,8 +25,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class AccessREST extends AsyncTask<HashMap<String,String>, Void, String> {
 
-    final String URL="http://40.68.44.128:8080/" +
-            "";
+    final String URL="http://40.68.44.128:8080/insert_syntom";
     AsyncTaskListener asyncListener;
     private Exception exception;
 

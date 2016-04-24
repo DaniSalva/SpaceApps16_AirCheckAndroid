@@ -2,9 +2,12 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:gravity="center_horizontal"
+    android:id="@+id/feedContainer">
     >
 
     <android.support.design.widget.AppBarLayout
@@ -23,29 +26,39 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/barLayout"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="15dp"
-        android:orientation="vertical"
-        >
-        <EditText
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        card_view:cardCornerRadius="@dimen/card_margin_charge"
+        card_view:cardBackgroundColor="#ffffff">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="25dp">
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/label_charger"
+            android:layout_alignParentTop="true"
+            android:textSize="@dimen/label_textsize"
             android:text="@string/feed"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
             />
         <CheckBox
+            android:layout_marginTop="40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/coughcheck"
             android:text="@string/cough"
             android:onClick="selectItems"
-
+            android:layout_below="@id/label_charger"
             />
         <CheckBox
             android:layout_width="wrap_content"
@@ -53,7 +66,7 @@
             android:id="@+id/whezcheck"
             android:text="@string/wheezing"
             android:onClick="selectItems"
-
+            android:layout_below="@id/coughcheck"
             />
         <CheckBox
             android:layout_width="wrap_content"
@@ -61,7 +74,7 @@
             android:id="@+id/nasalcheck"
             android:text="@string/nasal"
             android:onClick="selectItems"
-
+            android:layout_below="@id/whezcheck"
             />
         <CheckBox
             android:layout_width="wrap_content"
@@ -69,6 +82,7 @@
             android:id="@+id/sneezecheck"
             android:text="@string/sneeze"
             android:onClick="selectItems"
+            android:layout_below="@id/nasalcheck"
 
             />
         <CheckBox
@@ -77,6 +91,7 @@
             android:id="@+id/breathcheck"
             android:text="@string/breath"
             android:onClick="selectItems"
+            android:layout_below="@id/sneezecheck"
             />
         <CheckBox
             android:layout_width="wrap_content"
@@ -84,6 +99,7 @@
             android:id="@+id/eyescheck"
             android:text="@string/eyes"
             android:onClick="selectItems"
+            android:layout_below="@id/breathcheck"
             />
         <CheckBox
             android:layout_width="wrap_content"
@@ -91,25 +107,22 @@
             android:id="@+id/mouthcheck"
             android:text="@string/mouth"
             android:onClick="selectItems"
+            android:layout_below="@id/eyescheck"
             />
+
         <Button
             android:layout_width="150dp"
+            android:layout_marginTop="50dp"
             android:layout_height="wrap_content"
             android:text="Submit"
             android:id="@+id/submitfeedback"
             android:layout_gravity="center_horizontal"
             android:onClick="FinalSelection"
-
+            android:layout_below="@id/mouthcheck"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/result"
-            android:text="orueba"
-            android:textColor="@color/color_black"/>
-    </LinearLayout>
-
+    </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
 
 </RelativeLayout>

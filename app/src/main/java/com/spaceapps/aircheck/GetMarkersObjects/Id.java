@@ -1,6 +1,7 @@
 
 package com.spaceapps.aircheck.GetMarkersObjects;
 
+
 public class Id {
 
     private String $oid;

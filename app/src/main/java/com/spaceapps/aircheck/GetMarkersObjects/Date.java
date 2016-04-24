@@ -1,6 +1,7 @@
 
 package com.spaceapps.aircheck.GetMarkersObjects;
 
+
 public class Date {
 
     private String $date;

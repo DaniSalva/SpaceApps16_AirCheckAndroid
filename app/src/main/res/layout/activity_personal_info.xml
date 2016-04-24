@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sirveapp.dsalvador.sirveapp.Activities.PersonalInfoActivity">
+    tools:context=".PersonalInfoActivity">
 
     <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
         android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay"
@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/profile_inputs"
-            android:text="usuario@fcirce.es"
+            android:text="usuario@spaceapps.es"
             android:layout_marginTop="@dimen/txt_top"
             android:id="@+id/emailTxt"
             android:layout_below="@+id/emailTitle"
