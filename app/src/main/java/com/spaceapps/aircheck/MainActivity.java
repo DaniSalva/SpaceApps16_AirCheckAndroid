@@ -22,12 +22,8 @@ import com.spaceapps.aircheck.Fragments.MapFragment;
 import com.spaceapps.aircheck.Fragments.TravelFragment;
 import com.spaceapps.aircheck.Fragments.ViewPagerAdapter;
 
-import java.util.ArrayList;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView _emailHeader;
     private int[] tabIcons = {
             R.drawable.ic_map,
-            R.drawable.ic_stats
+            R.drawable.ic_search,
     };
 
 

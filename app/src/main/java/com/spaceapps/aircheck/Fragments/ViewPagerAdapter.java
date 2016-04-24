@@ -29,7 +29,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private int[] tabIcons = {
             R.drawable.ic_map,
-            R.drawable.ic_stats
+            R.drawable.ic_search
 
     };
 

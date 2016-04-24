@@ -70,8 +70,8 @@ public class ApiManager {
             @GET("/pollution/v1/so2/{lat},{lon}/current.json?appid="+API_CODE)
             public void getSO2(@Path("lat") double lat, @Path("lon") double lon, Callback<SO2> callback);
 
-            //http://api.openweathermap.org/data/2.5/station/find?lat=41&lon=2&cnt=1&appid=570b33d8c0275b0e221296d7b6190032
-            @GET("/data/2.5/station/find?cnt=1&appid="+API_CODE)
+            //http://api.openweathermap.org/data/2.5/station/find?lat=41&lon=2&cnt=10&appid=570b33d8c0275b0e221296d7b6190032
+            @GET("/data/2.5/station/find?cnt=3&appid="+API_CODE)
             public void getStation(@Query("lat") double lat, @Query("lon") double lon, Callback<ArrayList<Hub>> callback);
 
 

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.http.Field;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Query;
