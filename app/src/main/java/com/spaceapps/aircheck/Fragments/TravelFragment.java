@@ -120,32 +120,34 @@ public class TravelFragment extends Fragment {
         btSumbitCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvTest.setText(acCity.getText().toString());
-                try {
-                    List<Address> addresses = gc.getFromLocationName(acCity.getText().toString(), 10); // get the found Address Objects
+                if (acCity.getText().length() != 0) {
+                    tvTest.setText(acCity.getText().toString());
+                    try {
+                        List<Address> addresses = gc.getFromLocationName(acCity.getText().toString(), 10); // get the found Address Objects
 
-                    acCity.setText(addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName());
+                        acCity.setText(addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName());
 
-                /*ArrayList<String> sAdapter = new ArrayList<String>();
-                for (Address a:addresses) {
-                    tvTest.setText(tvTest.getText() + "\n" + a.toString());
-                    sAdapter.add(a.getLocality() + ", " + a.getCountryName());
-                }*/
+                    /*ArrayList<String> sAdapter = new ArrayList<String>();
+                    for (Address a:addresses) {
+                        tvTest.setText(tvTest.getText() + "\n" + a.toString());
+                        sAdapter.add(a.getLocality() + ", " + a.getCountryName());
+                    }*/
 
-                /*String[] cities = (String[]) sAdapter.toArray(new String[sAdapter.size()]);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(ctx,
-                        android.R.layout.simple_dropdown_item_1line, cities);
+                    /*String[] cities = (String[]) sAdapter.toArray(new String[sAdapter.size()]);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(ctx,
+                            android.R.layout.simple_dropdown_item_1line, cities);
 
-                acCity.setAdapter(adapter);*/
+                    acCity.setAdapter(adapter);*/
 
 
+                        //calculeData(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
 
-                    calculeData(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+                    int goodness = getGoodness(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-
             }
         });
 
@@ -176,8 +178,8 @@ public class TravelFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                calculeData(location.getLatitude(), location.getLongitude());
-
+                //calculeData(location.getLatitude(), location.getLongitude());
+                int goodness = getGoodness(location.getLatitude(), location.getLongitude());
             }
         });
 
@@ -186,8 +188,15 @@ public class TravelFragment extends Fragment {
     }
 
 
+    private int getGoodness(double latitude, double longitude) {
+        final double lat = new BigDecimal(latitude).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+        final double lon = new BigDecimal(longitude).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+
+        return 0;
+    }
+
     private void calculeData(final double latitude, final double longitude) {
-        double lat = new BigDecimal(latitude).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+        final double lat = new BigDecimal(latitude).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
         final double lon = new BigDecimal(longitude).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
 
 
@@ -198,71 +207,65 @@ public class TravelFragment extends Fragment {
         final double[] so2Value = new double[1];
         tvTest.setText("");
 
-        boolean finish = false;
-        while (!finish) {
-            ApiManager.getApiService().getCO(lat, lon, new Callback<CO>() {
-                @Override
-                public void success(CO co, Response response) {
-                    coValue[0] = co.getData().get(0).getValue();
+        ApiManager.getApiService().getCO(lat, lon, new Callback<CO>() {
+            @Override
+            public void success(CO co, Response response) {
+                coValue[0] = co.getData().get(0).getValue();
 
-                    ApiManager.getApiService().getOzone(lat, lon, new Callback<O3>() {
-                        @Override
-                        public void success(O3 o3, Response response) {
-                            ozoneValue[0] = o3.getData();
-                            tvTest.setText("ozoneValue " + ozoneValue[0] + "\n");
-                            ApiManager.getApiService().getNO2(lat, lon, new Callback<NitrousOxide>() {
-                                @Override
-                                public void success(NitrousOxide no2, Response response) {
-                                    no2Value[0] = no2.getData().getNo2().getValue();
-                                    tvTest.setText(tvTest.getText() + "no2Value " + no2Value[0] + "\n");
-                                    ApiManager.getApiService().getSO2(lat, lon, new Callback<SO2>() {
-                                        @Override
-                                        public void success(SO2 so2, Response response) {
-                                            so2Value[0] = so2.getData().get(0).getValue();
-                                            tvTest.setText(tvTest.getText() + "so2Value " + so2Value[0] + "\n");
+                ApiManager.getApiService().getOzone(lat, lon, new Callback<O3>() {
+                    @Override
+                    public void success(O3 o3, Response response) {
+                        ozoneValue[0] = o3.getData();
+                        tvTest.setText("ozoneValue " + ozoneValue[0] + "\n");
+                        ApiManager.getApiService().getNO2(lat, lon, new Callback<NitrousOxide>() {
+                            @Override
+                            public void success(NitrousOxide no2, Response response) {
+                                no2Value[0] = no2.getData().getNo2().getValue();
+                                tvTest.setText(tvTest.getText() + "no2Value " + no2Value[0] + "\n");
+                                ApiManager.getApiService().getSO2(lat, lon, new Callback<SO2>() {
+                                    @Override
+                                    public void success(SO2 so2, Response response) {
+                                        so2Value[0] = so2.getData().get(0).getValue();
+                                        tvTest.setText(tvTest.getText() + "so2Value " + so2Value[0] + "\n");
 
-                                            ApiManager.getApiService().getCurrentWeather(lat, lon, new Callback<Forecast>() {
-                                                @Override
-                                                public void success(Forecast forecast, Response response) {
-                                                    tvTest.setText(tvTest.getText() + "Succes " + forecast.getWeather().get(0).getMain());
-                                                }
+                                        ApiManager.getApiService().getCurrentWeather(lat, lon, new Callback<Forecast>() {
+                                            @Override
+                                            public void success(Forecast forecast, Response response) {
+                                                tvTest.setText(tvTest.getText() + "Succes " + forecast.getWeather().get(0).getMain());
+                                            }
 
-                                                @Override
-                                                public void failure(RetrofitError error) {
-                                                    tvTest.setText("Failure ");
-                                                }
-                                            });
-                                        }
+                                            @Override
+                                            public void failure(RetrofitError error) {
+                                                tvTest.setText("Failure ");
+                                            }
+                                        });
+                                    }
 
-                                        @Override
-                                        public void failure(RetrofitError error) {
-                                            tvTest.setText("Failure so2" + error.getMessage());
-                                        }
-                                    });
-                                }
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        tvTest.setText("Failure so2" + error.getMessage());
+                                    }
+                                });
+                            }
 
-                                @Override
-                                public void failure(RetrofitError error) {
-                                }
-                            });
-                        }
+                            @Override
+                            public void failure(RetrofitError error) {
+                            }
+                        });
+                    }
 
-                        @Override
-                        public void failure(RetrofitError error) {
-                        }
-                    });
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-
-                }
-            });
-
-            if (!finish){
-                lat += 0.1;
+                    @Override
+                    public void failure(RetrofitError error) {
+                    }
+                });
             }
-        }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+
 
 
     }
