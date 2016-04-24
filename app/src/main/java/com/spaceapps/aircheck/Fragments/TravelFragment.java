@@ -281,7 +281,7 @@ public class TravelFragment extends Fragment {
                             @Override
                             public void success(Risk risk, Response response) {
                                 if (!cities.contains(tvSug.getText() + addresses.get(0).getLocality())) {
-                                    tvSug.setText(tvSug.getText() + addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName() + " - " + String.valueOf(risk.getValue()) + "\n");
+                                    tvSug.setText(tvSug.getText() + addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName() + ": " + String.valueOf(risk.getValue()) + "/10\n");
                                     //tvSug.setText(tvSug.getText() + String.valueOf(risk.getValue()) + " - " + "\n");
                                     cities.add(tvSug.getText() + addresses.get(0).getLocality());
                                 }
