@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -43,6 +44,7 @@ import com.spaceapps.aircheck.ServerManager;
 
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -145,6 +147,11 @@ public class MapFragment extends Fragment implements LocationListener {
 
                 public View getInfoWindow(Marker arg0) {
                     View v = getActivity().getLayoutInflater().inflate(R.layout.custom_infowindow, null);
+                    TextView title = (TextView) v.findViewById(R.id.markerTitle);
+                    title.setText(arg0.getTitle());
+                    TextView txt = (TextView) v.findViewById(R.id.markerText);
+                    txt.setText(arg0.getSnippet());
+
                     return v;
                 }
 

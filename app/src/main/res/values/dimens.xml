@@ -23,7 +23,7 @@
     <dimen name="profile_inputs">35dp</dimen>
     <dimen name="txt_top">15dp</dimen>
 
-    <dimen name="label_textsize">18sp</dimen>
+    <dimen name="label_textsize">10sp</dimen>
 
 
 </resources>

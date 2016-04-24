@@ -330,24 +330,18 @@ public class GetRequest {
 
     @Override
     public String toString() {
-        return "GetRequest{" +
-                "loc=" + loc +
-                ", eyes='" + eyes + '\'' +
-                ", cough='" + cough + '\'' +
-                ", risk=" + risk +
-                ", temp=" + temp +
-                ", sneeze='" + sneeze + '\'' +
-                ", nasal='" + nasal + '\'' +
-                ", humidity=" + humidity +
-                ", breath='" + breath + '\'' +
-                ", so2=" + so2 +
-                ", mouth='" + mouth + '\'' +
-                ", user='" + user + '\'' +
-                ", date=" + date +
-                ", wheeze='" + wheeze + '\'' +
-                ", Id=" + Id +
-                ", o3=" + o3 +
-                ", no2=" + no2 +
-                '}';
+        return  "Date: " + date.get$date() + '\n' +
+                "Temp: " + temp + '\n' +
+                "O3: " + o3 + '\n' +
+                "NO2:" + no2 + '\n' +
+                "SO2:" + so2 + '\n' +
+                "Humidity: " + humidity + '\n' +
+                "Cough: " + cough + '\n' +
+                "Sneeze: " + sneeze + '\n' +
+                "Nasal: " + nasal + '\n' +
+                "Breath: " + breath + '\n' +
+                "Eyes: " + eyes + '\n' +
+                "Mouth: " + mouth + '\n' +
+                "Wheeze: " + wheeze;
     }
 }

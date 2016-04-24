@@ -9,28 +9,41 @@
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         card_view:cardCornerRadius="@dimen/card_margin_charge"
         card_view:cardBackgroundColor="#ffffff">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:padding="25dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/label_charger"
+            android:id="@+id/markerTitle"
             android:layout_alignParentTop="true"
-            android:textSize="@dimen/label_textsize"
-            android:text="@string/feed"
+            android:textSize="15sp"
+            android:textStyle="bold"
             />
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/markerText"
+            android:layout_alignParentTop="true"
+            android:layout_below="@+id/markerTitle"
+            android:textSize="@dimen/label_textsize"
+            />
+
+
     </RelativeLayout>
     </android.support.v7.widget.CardView>
 
