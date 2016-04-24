@@ -132,6 +132,30 @@ public class MapFragment extends Fragment implements LocationListener {
             // Enabling MyLocation Layer of Google Map
             googleMap.setMyLocationEnabled(true);
 
+            Location locurr= googleMap.getMyLocation();
+
+            if(locurr!=null){
+                cameraPosition = new CameraPosition.Builder()
+                        .target(new LatLng(locurr.getLatitude(),locurr.getLongitude())).zoom(12).build();
+                googleMap.animateCamera(CameraUpdateFactory
+                        .newCameraPosition(cameraPosition));
+            }
+
+            googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                public View getInfoWindow(Marker arg0) {
+                    View v = getActivity().getLayoutInflater().inflate(R.layout.custom_infowindow, null);
+                    return v;
+                }
+
+                public View getInfoContents(Marker arg0) {
+
+                    //View v = getLayoutInflater().inflate(R.layout.custom_infowindow, null);
+
+                    return null;
+
+                }
+            });
 
             // Getting LocationManager object from System Service LOCATION_SERVICE
             LocationManager locationManager = (LocationManager) getActivity().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
@@ -186,11 +210,10 @@ public class MapFragment extends Fragment implements LocationListener {
 
     private void addMarkersToMap() {
 
-        ServerManager.getApiService().getUsersFeedback(46.21, -0.9, 10000, new Callback<ArrayList<GetRequest>>() {
-
-
+        ServerManager.getApiService().getUsersFeedback(46.21, -0.9, 1, new Callback<ArrayList<GetRequest>>() {
             @Override
             public void success(ArrayList<GetRequest> getRequests, Response response) {
+                Log.d("DBG","adsad");
                 for (int i = 0; i < getRequests.size(); i++) {
                     Log.d("DBG","marker: "+getRequests.get(i).getUser()+" "+getRequests.get(i).getLoc().getCoordinates().get(1)
                             +" "+getRequests.get(i).getLoc().getCoordinates().get(0));
@@ -199,9 +222,9 @@ public class MapFragment extends Fragment implements LocationListener {
                     BitmapDescriptor bitmapMarker;
                     bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
 
-                    /*switch (getRequests.get(i).getState()) {
+                    switch (getRequests.get(i).getRisk().getValue()) {
                         case 0:
-                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
                             Log.i("DBG", "RED");
                             break;
                         case 1:
@@ -209,22 +232,52 @@ public class MapFragment extends Fragment implements LocationListener {
                             Log.i("DBG", "GREEN");
                             break;
                         case 2:
-                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
                             Log.i("DBG", "ORANGE");
                             break;
-                        default:
+                        case 3:
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+                            Log.i("DBG", "RED");
+                            break;
+                        case 4:
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
+                            Log.i("DBG", "GREEN");
+                            break;
+                        case 5:
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
+                            Log.i("DBG", "ORANGE");
+                            break;
+                        case 6:
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
+                            Log.i("DBG", "RED");
+                            break;
+                        case 7:
                             bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+                            Log.i("DBG", "GREEN");
+                            break;
+                        case 8:
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+                            Log.i("DBG", "ORANGE");
+                            break;
+                        case 9:
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+                            Log.i("DBG", "RED");
+                            break;
+                        default:
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
                             Log.i("DBG", "DEFAULT");
                             break;
-                    }*/
+                    }
                     googleMap.addMarker(new MarkerOptions().position(ll).title(getRequests.get(i).getUser())
                             .snippet(getRequests.get(i).toString()).icon(bitmapMarker));
                     //Marker mark = new Marker
+
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
+                Log.d("DBG",error.toString());
 
             }
         });

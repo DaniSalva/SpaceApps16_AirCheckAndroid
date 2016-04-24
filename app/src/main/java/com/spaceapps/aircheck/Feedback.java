@@ -21,14 +21,13 @@ import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.Callback;
 
 public class Feedback extends AppCompatActivity  {
 
     @InjectView(R.id.submitfeedback) Button _submitButton;
-    @InjectView(R.id.result) TextView _res;
     ArrayList<String> selection= new ArrayList<String>();
 
     final String URL="http://40.68.44.128:8080/insert_syntom";
@@ -142,14 +141,11 @@ public class Feedback extends AppCompatActivity  {
     }
     public void FinalSelection( View view) {
         fillHashMap();
-        //HashMap<String,String> map = postParams;
-
         ServerManager.getApiService().sendFeedback(postParams.get("lat"), postParams.get("long"), postParams.get("user"), postParams.get("date"),
-                postParams.get("breathe"), postParams.get("cough"), postParams.get("wheeze"), postParams.get("eyes"), postParams.get("mouth"),
+                postParams.get("breath"), postParams.get("cough"), postParams.get("wheeze"), postParams.get("eyes"), postParams.get("mouth"),
                 postParams.get("nasal"), postParams.get("sneeze"), new Callback<String>() {
                     @Override
                     public void success(String s, Response response) {
-                        _res.setText(s);
                     }
 
                     @Override
@@ -157,7 +153,6 @@ public class Feedback extends AppCompatActivity  {
                         Log.d("DBG",error.toString());
                     }
                 });
-
         /*final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Autenticando...");

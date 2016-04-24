@@ -1,13 +1,15 @@
 
 package com.spaceapps.aircheck.GetMarkersObjects;
 
+
 public class GetRequest {
 
     private Loc loc;
     private String eyes;
     private String cough;
+    private Risk risk;
     private Integer temp;
-    private Double o3;
+    private String sneeze;
     private String nasal;
     private Double humidity;
     private String breath;
@@ -17,7 +19,7 @@ public class GetRequest {
     private Date date;
     private String wheeze;
     private Id Id;
-    private String sneeze;
+    private Double o3;
     private Double no2;
 
     /**
@@ -77,6 +79,24 @@ public class GetRequest {
     /**
      * 
      * @return
+     *     The risk
+     */
+    public Risk getRisk() {
+        return risk;
+    }
+
+    /**
+     * 
+     * @param risk
+     *     The risk
+     */
+    public void setRisk(Risk risk) {
+        this.risk = risk;
+    }
+
+    /**
+     * 
+     * @return
      *     The temp
      */
     public Integer getTemp() {
@@ -95,19 +115,19 @@ public class GetRequest {
     /**
      * 
      * @return
-     *     The o3
+     *     The sneeze
      */
-    public Double getO3() {
-        return o3;
+    public String getSneeze() {
+        return sneeze;
     }
 
     /**
      * 
-     * @param o3
-     *     The o3
+     * @param sneeze
+     *     The sneeze
      */
-    public void setO3(Double o3) {
-        this.o3 = o3;
+    public void setSneeze(String sneeze) {
+        this.sneeze = sneeze;
     }
 
     /**
@@ -275,19 +295,19 @@ public class GetRequest {
     /**
      * 
      * @return
-     *     The sneeze
+     *     The o3
      */
-    public String getSneeze() {
-        return sneeze;
+    public Double getO3() {
+        return o3;
     }
 
     /**
      * 
-     * @param sneeze
-     *     The sneeze
+     * @param o3
+     *     The o3
      */
-    public void setSneeze(String sneeze) {
-        this.sneeze = sneeze;
+    public void setO3(Double o3) {
+        this.o3 = o3;
     }
 
     /**
@@ -310,20 +330,24 @@ public class GetRequest {
 
     @Override
     public String toString() {
-        return  "Date: " + date + "\n"+
-                "Temp: " + temp +
-                "  O3:" + o3 + "\n"+
-                "SO2:" + so2 +
-                "  NO2:" + no2 +
-                "Humidity:" + humidity + "\n\n"+
-                "Syntoms\n"+
-                "*******\n"+
-                "Eyes:'" + eyes + '\'' +
-                "  Cough:'" + cough + '\n' +
-                "Nasal: '" + nasal +
-                "  Breath: '" + breath + '\n' +
-                "Mouth: '" + mouth +
-                "  Wheeze: '" + wheeze + '\n' +
-                "Sneeze: '" + sneeze;
+        return "GetRequest{" +
+                "loc=" + loc +
+                ", eyes='" + eyes + '\'' +
+                ", cough='" + cough + '\'' +
+                ", risk=" + risk +
+                ", temp=" + temp +
+                ", sneeze='" + sneeze + '\'' +
+                ", nasal='" + nasal + '\'' +
+                ", humidity=" + humidity +
+                ", breath='" + breath + '\'' +
+                ", so2=" + so2 +
+                ", mouth='" + mouth + '\'' +
+                ", user='" + user + '\'' +
+                ", date=" + date +
+                ", wheeze='" + wheeze + '\'' +
+                ", Id=" + Id +
+                ", o3=" + o3 +
+                ", no2=" + no2 +
+                '}';
     }
 }
