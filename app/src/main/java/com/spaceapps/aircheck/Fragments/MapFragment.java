@@ -193,6 +193,7 @@ public class MapFragment extends Fragment implements LocationListener {
 
             final LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
+            final CameraPosition finalCameraPosition = cameraPosition;
             googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
 
                 @Override
@@ -205,7 +206,7 @@ public class MapFragment extends Fragment implements LocationListener {
                     Log.d("DBG","MOVE MAP");
                     //new HttpAsyncTask().execute(""+googleMap.getCameraPosition().target.latitude,
                     //        ""+googleMap.getCameraPosition().target.longitude,""+10);
-                    addMarkersToMap();
+                    addMarkersToMap(finalCameraPosition.target);
                 }
 
             });
@@ -215,9 +216,10 @@ public class MapFragment extends Fragment implements LocationListener {
         return v;
     }
 
-    private void addMarkersToMap() {
+    private void addMarkersToMap(LatLng pos) {
 
-        ServerManager.getApiService().getUsersFeedback(46.21, -0.9, 1, new Callback<ArrayList<GetRequest>>() {
+        ServerManager.getApiService().getUsersFeedback(pos.latitude,
+                pos.longitude, 1, new Callback<ArrayList<GetRequest>>() {
             @Override
             public void success(ArrayList<GetRequest> getRequests, Response response) {
                 Log.d("DBG","adsad");
@@ -232,47 +234,37 @@ public class MapFragment extends Fragment implements LocationListener {
                     switch (getRequests.get(i).getRisk().getValue()) {
                         case 0:
                             bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-                            Log.i("DBG", "RED");
                             break;
                         case 1:
                             bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-                            Log.i("DBG", "GREEN");
                             break;
                         case 2:
                             bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-                            Log.i("DBG", "ORANGE");
                             break;
                         case 3:
-                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-                            Log.i("DBG", "RED");
+                            bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN
+                            );
                             break;
                         case 4:
                             bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
-                            Log.i("DBG", "GREEN");
                             break;
                         case 5:
                             bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
-                            Log.i("DBG", "ORANGE");
                             break;
                         case 6:
                             bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
-                            Log.i("DBG", "RED");
                             break;
                         case 7:
                             bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
-                            Log.i("DBG", "GREEN");
                             break;
                         case 8:
                             bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
-                            Log.i("DBG", "ORANGE");
                             break;
                         case 9:
                             bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
-                            Log.i("DBG", "RED");
                             break;
                         default:
                             bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
-                            Log.i("DBG", "DEFAULT");
                             break;
                     }
                     googleMap.addMarker(new MarkerOptions().position(ll).title(getRequests.get(i).getUser())

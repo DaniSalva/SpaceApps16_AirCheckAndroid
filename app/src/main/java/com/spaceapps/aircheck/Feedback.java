@@ -3,6 +3,7 @@ package com.spaceapps.aircheck;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +32,8 @@ public class Feedback extends AppCompatActivity  {
     ArrayList<String> selection= new ArrayList<String>();
 
     final String URL="http://40.68.44.128:8080/insert_syntom";
+    private double _lat;
+    private double _long;
 
     public HashMap<String, String> postParams= new HashMap<>();
     @Override
@@ -39,8 +42,8 @@ public class Feedback extends AppCompatActivity  {
         setContentView(R.layout.activity_feedback);
         ButterKnife.inject(this);
         Intent intent = getIntent();
-        intent.getStringExtra("Lat");
-        intent.getStringExtra("Long");
+        _lat=Double.parseDouble(intent.getStringExtra("Lat"));
+        _long=Double.parseDouble(intent.getStringExtra("Long"));
         addListenerOnButton();
         setToolbar();
 
@@ -53,8 +56,8 @@ public class Feedback extends AppCompatActivity  {
         double randomlat = 41.65 + (41.6559 - 41.65) * r.nextDouble();
         double randomlong = -0.8800 + (-0.8826 - -0.8806) * r.nextDouble();
 
-        postParams.put("lat",""+randomlat);
-        postParams.put("long",""+randomlong);
+        postParams.put("lat",""+_lat);
+        postParams.put("long",""+_long);
         postParams.put("date","20161123");
         postParams.put("user","Almadapa");
 
@@ -139,18 +142,25 @@ public class Feedback extends AppCompatActivity  {
                 break;
         }
     }
-    public void FinalSelection( View view) {
-        fillHashMap();
+    public void FinalSelection(final View view) {
         ServerManager.getApiService().sendFeedback(postParams.get("lat"), postParams.get("long"), postParams.get("user"), postParams.get("date"),
                 postParams.get("breath"), postParams.get("cough"), postParams.get("wheeze"), postParams.get("eyes"), postParams.get("mouth"),
                 postParams.get("nasal"), postParams.get("sneeze"), new Callback<String>() {
                     @Override
                     public void success(String s, Response response) {
+                        Snackbar snackbar = Snackbar
+                                .make(view, "Geotag sent! Thanks!", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                        finish();
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
+                        Snackbar snackbar = Snackbar
+                                .make(getCurrentFocus(), "There was a problem! Resent your geotag", Snackbar.LENGTH_LONG);
+                        snackbar.show();
                         Log.d("DBG",error.toString());
+                        finish();
                     }
                 });
         /*final ProgressDialog progressDialog = new ProgressDialog(this);

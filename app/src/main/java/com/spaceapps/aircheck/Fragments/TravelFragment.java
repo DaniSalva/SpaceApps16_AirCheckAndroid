@@ -3,6 +3,7 @@ package com.spaceapps.aircheck.Fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cardiomood.android.controls.gauge.SpeedometerGauge;
 import com.spaceapps.aircheck.ApiManager;
 import com.spaceapps.aircheck.JSONObjects.Risk;
 import com.spaceapps.aircheck.JSONObjects.carbonMonoxide.CO;
@@ -56,6 +58,7 @@ public class TravelFragment extends Fragment {
     private TextView tvSug;
     private Geocoder gc;
     private ImageView imImg;
+    private SpeedometerGauge speedometer;
 
     LocationManager locationManager;
     Criteria criteria;

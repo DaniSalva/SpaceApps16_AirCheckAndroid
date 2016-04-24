@@ -332,10 +332,10 @@ public class GetRequest {
     public String toString() {
         return  "Date: " + date.get$date() + '\n' +
                 "Temp: " + temp + '\n' +
-                "O3: " + o3 + '\n' +
-                "NO2:" + no2 + '\n' +
-                "SO2:" + so2 + '\n' +
-                "Humidity: " + humidity + '\n' +
+                "O3: " + Round(o3,2) + '\n' +
+                "NO2: " + Round(no2,2) + '\n' +
+                "SO2: " + Round((Double)so2,2) + '\n' +
+                "Humidity: " + Round(humidity,2) + '\n' +
                 "Cough: " + cough + '\n' +
                 "Sneeze: " + sneeze + '\n' +
                 "Nasal: " + nasal + '\n' +
@@ -343,5 +343,12 @@ public class GetRequest {
                 "Eyes: " + eyes + '\n' +
                 "Mouth: " + mouth + '\n' +
                 "Wheeze: " + wheeze;
+    }
+
+    public String Round(Double num, double positions){
+        if (num==null)
+            return "--";
+        double roundOff = Math.round(num * Math.pow(10,positions)) / Math.pow(10,positions);
+        return  ""+roundOff;
     }
 }
