@@ -187,12 +187,14 @@ public class MapFragment extends Fragment implements LocationListener {
     private void addMarkersToMap() {
 
         ServerManager.getApiService().getUsersFeedback(46.21, -0.9, 10000, new Callback<ArrayList<GetRequest>>() {
+
+
             @Override
             public void success(ArrayList<GetRequest> getRequests, Response response) {
                 Log.d("DBG",getRequests.get(0).getUser());
                 for (int i = 0; i < getRequests.size(); i++) {
                     Log.d("DBG","marker: "+getRequests.get(i).getUser()+" "+getRequests.get(i).getLoc().getCoordinates().get(0)
-                    +" "+getRequests.get(i).getLoc().getCoordinates().get(1));
+                            +" "+getRequests.get(i).getLoc().getCoordinates().get(1));
                     LatLng ll = new LatLng(getRequests.get(i).getLoc().getCoordinates().get(0),
                             getRequests.get(i).getLoc().getCoordinates().get(1));
                     BitmapDescriptor bitmapMarker;
@@ -224,10 +226,9 @@ public class MapFragment extends Fragment implements LocationListener {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("DBG",error.toString());
+
             }
         });
-
     }
     public void moveCamera(View view) {
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(UPV));

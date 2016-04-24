@@ -21,13 +21,11 @@ import android.widget.TextView;
 import com.spaceapps.aircheck.Fragments.MapFragment;
 import com.spaceapps.aircheck.Fragments.TravelFragment;
 import com.spaceapps.aircheck.Fragments.ViewPagerAdapter;
-import com.spaceapps.aircheck.JSONObjects.station.StationArray;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -72,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*
+        Set toolbar, viewpager and tablayout
+         */
         setToolbar(); // Setear Toolbar como action bar
 
         _viewPager = (ViewPager) findViewById(R.id.viewpager);
