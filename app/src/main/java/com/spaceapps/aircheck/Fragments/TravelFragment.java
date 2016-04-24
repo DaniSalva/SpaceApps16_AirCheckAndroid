@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.spaceapps.aircheck.ApiManager;
+import com.spaceapps.aircheck.JSONObjects.Risk;
 import com.spaceapps.aircheck.JSONObjects.carbonMonoxide.CO;
 import com.spaceapps.aircheck.JSONObjects.no2.NitrousOxide;
 import com.spaceapps.aircheck.JSONObjects.ozone.O3;
@@ -27,6 +28,7 @@ import com.spaceapps.aircheck.JSONObjects.so2.SO2;
 import com.spaceapps.aircheck.JSONObjects.station.Hub;
 import com.spaceapps.aircheck.JSONObjects.weather.Forecast;
 import com.spaceapps.aircheck.R;
+import com.spaceapps.aircheck.ServerManager;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -126,7 +128,7 @@ public class TravelFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (acCity.getText().length() != 0) {
-                    tvTest.setText(acCity.getText().toString());
+                    //tvTest.setText(acCity.getText().toString());
                     try {
                         List<Address> addresses = gc.getFromLocationName(acCity.getText().toString(), 10); // get the found Address Objects
 
@@ -144,9 +146,9 @@ public class TravelFragment extends Fragment {
 
                     acCity.setAdapter(adapter);*/
 
-                    calculeData(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+                    //calculeData(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
 
-                    //int goodness = getGoodness(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+                    getGoodness(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
                     //setImage(goodness);
 
                     } catch (IOException e) {
@@ -174,7 +176,7 @@ public class TravelFragment extends Fragment {
                     return;
                 }
                 Location location = locationManager.getLastKnownLocation(provider);
-                tvTest.setText(location.getLatitude() + " " + location.getLongitude());
+                //tvTest.setText(location.getLatitude() + " " + location.getLongitude());
 
                 try {
                     List<Address> addresses = gc.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
@@ -184,8 +186,8 @@ public class TravelFragment extends Fragment {
                 }
 
                 //calculeData(location.getLatitude(), location.getLongitude());
-                int goodness = getGoodness(location.getLatitude(), location.getLongitude());
-                setImage(goodness);
+                getGoodness(location.getLatitude(), location.getLongitude());
+                //setImage(goodness);
             }
         });
 
@@ -228,14 +230,24 @@ public class TravelFragment extends Fragment {
                 break;
         }
     }
-    private int getGoodness(double latitude, double longitude) {
+    private void getGoodness(double latitude, double longitude) {
         final double lat = new BigDecimal(latitude).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
         final double lon = new BigDecimal(longitude).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-        /*ApiManager.getApiService().getCO(lat, lon, new Callback<CO>() {
+        //final int[] status = {-1};
+        ServerManager.getApiService().getRisk(lat, lon, new Callback<Risk>() {
 
-        });*/
-            return 1;
+            @Override
+            public void success(Risk risk, Response response) {
+                setImage(risk.getValue());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+
     }
 
     private void calculeData(final double latitude, final double longitude) {
