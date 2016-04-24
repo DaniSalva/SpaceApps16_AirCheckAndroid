@@ -244,7 +244,7 @@ public class TravelFragment extends Fragment {
     }
     private void getGoodness(double latitude, double longitude) {
         tvTest.setText("");
-        tvSug.setText("");
+        tvSug.setText("Suggested cities: \n");
         imImg.setImageBitmap(null);
 
         final double lat = new BigDecimal(latitude).setScale(1, BigDecimal.ROUND_DOWN).doubleValue();
@@ -264,27 +264,30 @@ public class TravelFragment extends Fragment {
             }
         });
 
+        final ArrayList<String> cities = new ArrayList<String>();
         ApiManager.getApiService().getStation(lat, lon, new Callback<ArrayList<Hub>>() {
 
             @Override
             public void success(ArrayList<Hub> hubs, Response response) {
-                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAA " + hubs.size());
                 for (Hub hu:hubs) {
                     try {
-                        List<Address> addresses = gc.getFromLocation(hu.getStation().getCoord().getLat(), hu.getStation().getCoord().getLon(), 1);
-                        tvSug.setText(tvSug.getText() + addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName() +"\n");
-                                /*ServerManager.getApiService().getRisk(lat, lon, new Callback<Risk>() {
+                        final List<Address> addresses = gc.getFromLocation(hu.getStation().getCoord().getLat(), hu.getStation().getCoord().getLon(), 1);
+                        //tvSug.setText(tvSug.getText() + addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName() +"\n");
+                        ServerManager.getApiService().getRisk(lat, lon, new Callback<Risk>() {
 
-                                    @Override
-                                    public void success(Risk risk, Response response) {
-                                        tvSug.setText(tvSug.getText() + String.valueOf(risk.getValue()) + " - " + "\n");
-                                    }
+                            @Override
+                            public void success(Risk risk, Response response) {
+                                if (!cities.contains(tvSug.getText() + addresses.get(0).getLocality())) {
+                                    tvSug.setText(tvSug.getText() + addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName() + " - " + String.valueOf(risk.getValue()) + "\n");
+                                    //tvSug.setText(tvSug.getText() + String.valueOf(risk.getValue()) + " - " + "\n");
+                                    cities.add(tvSug.getText() + addresses.get(0).getLocality());
+                                }
+                            }
 
-                                    @Override
-                                    public void failure(RetrofitError error) {
-                                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB ") ;
-                                    }
-                                });*/
+                            @Override
+                            public void failure(RetrofitError error) {
+                            }
+                        });
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -294,7 +297,6 @@ public class TravelFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-                System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBB ");
             }
         });
 
