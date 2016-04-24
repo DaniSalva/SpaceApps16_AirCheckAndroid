@@ -22,8 +22,12 @@ import com.spaceapps.aircheck.Fragments.MapFragment;
 import com.spaceapps.aircheck.Fragments.TravelFragment;
 import com.spaceapps.aircheck.Fragments.ViewPagerAdapter;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
 

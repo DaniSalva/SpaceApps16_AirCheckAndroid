@@ -13,7 +13,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -22,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -36,9 +34,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.spaceapps.aircheck.Feedback;
-import com.spaceapps.aircheck.GetRequest;
+import com.spaceapps.aircheck.GetMarkersObjects.GetRequest;
 import com.spaceapps.aircheck.R;
 import com.spaceapps.aircheck.ServerManager;
 
@@ -49,16 +48,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -128,18 +123,6 @@ public class MapFragment extends Fragment implements LocationListener {
             }
 
             googleMap = mMapView.getMap();
-            // latitude and longitude
-            double latitude = 41.684691;
-            double longitude = -0.884999;
-
-            marker = new MarkerOptions().position(
-                    new LatLng(latitude, longitude)).title("CIRCE");
-
-            marker.icon(BitmapDescriptorFactory
-                    .defaultMarker(BitmapDescriptorFactory.HUE_RED));
-
-            // adding marker
-            googleMap.addMarker(marker);
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(41.684691, -0.884999)).zoom(12).build();
@@ -191,6 +174,7 @@ public class MapFragment extends Fragment implements LocationListener {
                     Log.d("DBG","MOVE MAP");
                     //new HttpAsyncTask().execute(""+googleMap.getCameraPosition().target.latitude,
                     //        ""+googleMap.getCameraPosition().target.longitude,""+10);
+                    addMarkersToMap();
                 }
 
             });
@@ -202,14 +186,21 @@ public class MapFragment extends Fragment implements LocationListener {
 
     private void addMarkersToMap() {
 
-        ServerManager.getApiService().getUsersFeedback(46.21, -0.9, 10, new Callback<ArrayList<GetRequest>>() {
+        ServerManager.getApiService().getUsersFeedback(46.21, -0.9, 10000, new Callback<ArrayList<GetRequest>>() {
+
+
             @Override
             public void success(ArrayList<GetRequest> getRequests, Response response) {
-                /*googleMap.clear();
+                Log.d("DBG",getRequests.get(0).getUser());
                 for (int i = 0; i < getRequests.size(); i++) {
-                    LatLng ll = new LatLng(getRequests.get(i).getLoc().get(0), getRequests.get(i).getLoc().get(1));
+                    Log.d("DBG","marker: "+getRequests.get(i).getUser()+" "+getRequests.get(i).getLoc().getCoordinates().get(0)
+                            +" "+getRequests.get(i).getLoc().getCoordinates().get(1));
+                    LatLng ll = new LatLng(getRequests.get(i).getLoc().getCoordinates().get(0),
+                            getRequests.get(i).getLoc().getCoordinates().get(1));
                     BitmapDescriptor bitmapMarker;
-                    switch (getRequests.get(i).getState()) {
+                    bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+
+                    /*switch (getRequests.get(i).getState()) {
                         case 0:
                             bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
                             Log.i("DBG", "RED");
@@ -226,10 +217,11 @@ public class MapFragment extends Fragment implements LocationListener {
                             bitmapMarker = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
                             Log.i("DBG", "DEFAULT");
                             break;
-                    }
+                    }*/
                     googleMap.addMarker(new MarkerOptions().position(ll).title(getRequests.get(i).getUser())
                             .snippet(getRequests.get(i).toString()).icon(bitmapMarker));
-                }*/
+                    //Marker mark = new Marker
+                }
             }
 
             @Override
@@ -237,7 +229,6 @@ public class MapFragment extends Fragment implements LocationListener {
 
             }
         });
-
     }
     public void moveCamera(View view) {
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(UPV));

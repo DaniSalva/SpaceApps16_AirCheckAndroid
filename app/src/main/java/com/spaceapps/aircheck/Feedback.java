@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,9 @@ import java.util.Random;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class Feedback extends AppCompatActivity  {
 
@@ -140,9 +144,19 @@ public class Feedback extends AppCompatActivity  {
         fillHashMap();
         //HashMap<String,String> map = postParams;
 
-        ServerManager.getApiService().sendFeedback(postParams.get("latitude"),postParams.get("longitude"),postParams.get("user"),postParams.get("date"),
-                postParams.get("breathe"),postParams.get("cough"),postParams.get("wheeze"),postParams.get("eyes"),postParams.get("mouth"),
-                postParams.get("nasal"),postParams.get("sneeze"));
+        ServerManager.getApiService().sendFeedback(postParams.get("lat"), postParams.get("long"), postParams.get("user"), postParams.get("date"),
+                postParams.get("breathe"), postParams.get("cough"), postParams.get("wheeze"), postParams.get("eyes"), postParams.get("mouth"),
+                postParams.get("nasal"), postParams.get("sneeze"), new Callback<String>() {
+                    @Override
+                    public void success(String s, Response response) {
+                        _res.setText(s);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.d("DBG",error.toString());
+                    }
+                });
 
         /*final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
