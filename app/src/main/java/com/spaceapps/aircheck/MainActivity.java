@@ -57,19 +57,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-        ApiManager.getApiService().getStation(41.7, -0.9, new Callback<StationArray>() {
-            @Override
-            public void success(StationArray hub, Response response) {
-                Log.d("TAG", hub.getStations().get(0).getStation().getCoord().getLat()
-                        + " " + hub.getStations().get(0).getStation().getCoord().getLon());
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d("DBG","Error "+error.getMessage());
-            }
-        });
-
         /*
         Set toolbar, viewpager and tablayout
          */
