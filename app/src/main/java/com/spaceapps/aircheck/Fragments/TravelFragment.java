@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.spaceapps.aircheck.ApiManager;
@@ -48,6 +49,7 @@ public class TravelFragment extends Fragment {
     private AutoCompleteTextView acCity;
     private TextView tvTest;
     private Geocoder gc;
+    private ImageView imImg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,6 +66,7 @@ public class TravelFragment extends Fragment {
         btCPos = ButterKnife.findById(v, R.id.btCPos);
         acCity = ButterKnife.findById(v, R.id.acCity);
         tvTest = ButterKnife.findById(v, R.id.tvTest);
+        imImg = ButterKnife.findById(v, R.id.imImg);
 
         /*
         acCity.addTextChangedListener(new TextWatcher() {
@@ -143,7 +146,7 @@ public class TravelFragment extends Fragment {
                         //calculeData(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
 
                     int goodness = getGoodness(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
-
+                    setImage(goodness);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -180,6 +183,7 @@ public class TravelFragment extends Fragment {
 
                 //calculeData(location.getLatitude(), location.getLongitude());
                 int goodness = getGoodness(location.getLatitude(), location.getLongitude());
+                setImage(goodness);
             }
         });
 
@@ -187,12 +191,49 @@ public class TravelFragment extends Fragment {
         return v;
     }
 
-
+    private void setImage(int index) {
+        tvTest.setText("Air quality: " + index + "/10\n");
+        switch (index) {
+            case 1:
+                imImg.setImageResource(R.drawable.emo1);
+                break;
+            case 2:
+                imImg.setImageResource(R.drawable.emo2);
+                break;
+            case 3:
+                imImg.setImageResource(R.drawable.emo3);
+                break;
+            case 4:
+                imImg.setImageResource(R.drawable.emo4);
+                break;
+            case 5:
+                imImg.setImageResource(R.drawable.emo5);
+                break;
+            case 6:
+                imImg.setImageResource(R.drawable.emo6);
+                break;
+            case 7:
+                imImg.setImageResource(R.drawable.emo7);
+                break;
+            case 8:
+                imImg.setImageResource(R.drawable.emo8);
+                break;
+            case 9:
+                imImg.setImageResource(R.drawable.emo9);
+                break;
+            case 10:
+                imImg.setImageResource(R.drawable.emo10);
+                break;
+        }
+    }
     private int getGoodness(double latitude, double longitude) {
         final double lat = new BigDecimal(latitude).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
         final double lon = new BigDecimal(longitude).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-        return 0;
+        /*ApiManager.getApiService().getCO(lat, lon, new Callback<CO>() {
+
+        });*/
+            return 1;
     }
 
     private void calculeData(final double latitude, final double longitude) {
